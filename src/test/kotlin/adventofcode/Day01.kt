@@ -1,15 +1,14 @@
 package adventofcode
 
 import org.junit.Test
-import java.io.File
-import java.util.TreeSet
+import java.util.*
 import kotlin.math.max
 
 class Day01 {
 
     @Test
     fun part1() {
-        val lines = File("src/test/resources/day01.txt").readLines()
+        val lines = Input.readAsLines("day01.txt")
         var max = 0
         var sum = 0
         lines.forEach { line ->
@@ -25,7 +24,7 @@ class Day01 {
 
     @Test
     fun part2() {
-        val lines = File("src/test/resources/day01.txt").readLines()
+        val lines = Input.readAsLines("day01.txt")
         val set = TreeSet<Int>()
         var sum = 0
         lines.forEach { line ->
