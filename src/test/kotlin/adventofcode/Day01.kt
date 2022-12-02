@@ -34,18 +34,10 @@ class Day01 {
     }
 
     private fun readCalorieCounts(): List<Int> {
-        val lines = Input.readAsLines("day01.txt")
-        val calorieCounts = mutableListOf<Int>()
-        var calorieCount = 0
-        lines.forEach { line ->
-            if (line.isBlank()) {
-                calorieCounts.add(calorieCount)
-                calorieCount = 0
-            } else {
-                calorieCount += line.toInt()
-            }
-        }
-        return calorieCounts.sortedDescending()
+        return Input.readAsString("day01.txt")
+            .split("\n\n")
+            .map { chunk -> chunk.split("\n").sumOf { it.toInt() } }
+            .sortedDescending();
     }
 
 }
