@@ -18,29 +18,38 @@ package adventofcode
 
 import org.junit.Test
 
+const val WIN = 6
+const val LOSE = 0
+const val DRAW = 3
+
+const val ROCK = 1
+const val PAPER = 2
+const val SCISSORS = 3
+
 class Day02 {
+
     private val part1Scores = mapOf(
-        "A X" to 4,
-        "A Y" to 8,
-        "A Z" to 3,
-        "B X" to 1,
-        "B Y" to 5,
-        "B Z" to 9,
-        "C X" to 7,
-        "C Y" to 2,
-        "C Z" to 6
+        "A X" to ROCK + DRAW,
+        "A Y" to PAPER + WIN,
+        "A Z" to SCISSORS + LOSE,
+        "B X" to ROCK + LOSE,
+        "B Y" to PAPER + DRAW,
+        "B Z" to SCISSORS + WIN,
+        "C X" to ROCK + WIN,
+        "C Y" to PAPER + LOSE,
+        "C Z" to SCISSORS + DRAW
     )
 
     private val part2Scores = mapOf(
-        "A X" to 3,
-        "A Y" to 4,
-        "A Z" to 8,
-        "B X" to 1,
-        "B Y" to 5,
-        "B Z" to 9,
-        "C X" to 2,
-        "C Y" to 6,
-        "C Z" to 7
+        "A X" to LOSE + SCISSORS,
+        "A Y" to DRAW + ROCK,
+        "A Z" to WIN + PAPER,
+        "B X" to LOSE + ROCK,
+        "B Y" to DRAW + PAPER,
+        "B Z" to WIN + SCISSORS,
+        "C X" to LOSE + PAPER,
+        "C Y" to DRAW + SCISSORS,
+        "C Z" to WIN + ROCK
     )
 
     @Test
