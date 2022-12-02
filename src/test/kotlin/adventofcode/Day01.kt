@@ -25,33 +25,27 @@ class Day01 {
 
     @Test
     fun part1() {
-        val lines = Input.readAsLines("day01.txt")
-        var max = 0
-        var sum = 0
-        lines.forEach { line ->
-            if ("".equals(line)) {
-                max = max(sum, max)
-                sum = 0
-            } else {
-                sum += line.toInt()
-            }
-        }
-        println(max)
+        println(readCalorieCounts().first())
     }
 
     @Test
     fun part2() {
+        println(readCalorieCounts().take(3).sum())
+    }
+
+    private fun readCalorieCounts(): List<Int> {
         val lines = Input.readAsLines("day01.txt")
-        val set = TreeSet<Int>()
-        var sum = 0
+        val calorieCounts = mutableListOf<Int>()
+        var calorieCount = 0
         lines.forEach { line ->
-            if ("".equals(line)) {
-                set.add(sum)
-                sum = 0
+            if (line.isBlank()) {
+                calorieCounts.add(calorieCount)
+                calorieCount = 0
             } else {
-                sum += line.toInt()
+                calorieCount += line.toInt()
             }
         }
-        println(set.reversed().take(3).sum())
+        return calorieCounts.sortedDescending()
     }
+
 }
