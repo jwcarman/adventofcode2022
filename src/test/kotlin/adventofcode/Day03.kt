@@ -23,12 +23,13 @@ class Day03 {
     private fun commonChar(groups: List<String>): Char =
         groups.tail().fold(groups.head().toSet()) { set, str -> set.intersect(str.toSet()) }.first()
 
+    private fun String.splitIntoCompartments() = chunked(length/2)
     @Test
     fun part1() {
         val rucksacks = Input.readAsLines("day03.txt")
         println(
             rucksacks
-                .map { rucksack -> rucksack.chunked(rucksack.length / 2) }
+                .map { it.splitIntoCompartments() }
                 .map { commonChar(it) }
                 .sumOf { it.priority() }
         )
