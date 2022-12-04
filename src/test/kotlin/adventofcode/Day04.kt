@@ -49,22 +49,17 @@ class Day04 {
 
     private fun calculatePart1(lines: List<String>): Int =
         lines
-            .map { parseRangePairs(it) }
+            .map { parseRangePair(it) }
             .count { pair -> pair.first.fullyContains(pair.second) || pair.second.fullyContains(pair.first) }
 
     private fun calculatePart2(lines: List<String>): Int =
         lines
-            .map { parseRangePairs(it) }
+            .map { parseRangePair(it) }
             .count { pair -> pair.first.overlaps(pair.second) }
 
-    private fun parseRangePairs(line: String): Pair<IntRange, IntRange> {
-        val splits = line.split(",")
-        return Pair(parseRange(splits[0]), parseRange(splits[1]))
-    }
-
-    private fun parseRange(str: String): IntRange {
-        val bounds = str.split("-")
-            .map { it.toInt() }
-        return IntRange(bounds[0], bounds[1])
+    private fun parseRangePair(line: String): Pair<IntRange, IntRange> {
+        val (first1, second1, first2, second2) = Regex("(\\d+)-(\\d+),(\\d+)-(\\d+)")
+            .matchEntire(line)!!.destructured
+        return Pair(first1.toInt()..second1.toInt(), first2.toInt()..second2.toInt())
     }
 }
