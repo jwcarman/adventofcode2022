@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date.year} James Carman
+ * Copyright (c) 2022 James Carman
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,13 +37,13 @@ class Day04 {
 
     @Test
     fun example1() {
-        val count = calculatePart1(Input.readAsLines("day04-sample.txt"))
+        val count = calculatePart1(Input.readAsLines("day04-example.txt"))
         assertEquals(2, count)
     }
 
     @Test
     fun example2() {
-        val count = calculatePart2(Input.readAsLines("day04-sample.txt"))
+        val count = calculatePart2(Input.readAsLines("day04-example.txt"))
         assertEquals(4, count)
     }
 
