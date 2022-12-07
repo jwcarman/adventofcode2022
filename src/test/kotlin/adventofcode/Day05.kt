@@ -73,8 +73,8 @@ class Day05 {
         val stacksMap = mutableMapOf<Int, CargoStack>()
         input
             .replace("]    ", "] [-]")
+            .replace("    [", "[-] [")
             .replace("     ", " [-] ")
-            .replace("    ", "[-] ")
             .replace("[", "")
             .replace("]", "")
             .lines().reversed().tail()
