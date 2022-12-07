@@ -21,6 +21,9 @@ import kotlin.test.assertEquals
 
 class Day06 {
 
+    private fun String.findUniqueChars(windowSize: Int): Int =
+        windowed(windowSize).indexOfFirst { it.toSet().size == windowSize } + windowSize
+
     @Test
     fun example1() {
         assertEquals(7, calculatePart1(Input.readAsString("day06-example.txt")))
@@ -41,16 +44,6 @@ class Day06 {
         println(calculatePart2(Input.readAsString("day06.txt")))
     }
 
-    private fun calculatePart1(input: String): Int {
-        return findFirstUniqueCharacterWindow(input, 4)
-    }
-
-    private fun calculatePart2(input:String): Int {
-        return findFirstUniqueCharacterWindow(input, 14)
-    }
-
-    private fun findFirstUniqueCharacterWindow(input: String, windowSize: Int): Int {
-        return input.windowed(windowSize)
-            .indexOfFirst { it.toSet().size == windowSize } + windowSize
-    }
+    private fun calculatePart1(input: String): Int = input.findUniqueChars(4)
+    private fun calculatePart2(input: String): Int = input.findUniqueChars(14)
 }
