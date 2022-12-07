@@ -27,23 +27,23 @@ class Day04 {
 
     @Test
     fun part1() {
-        println(calculatePart1(Input.readAsLines("day04.txt")))
+        println(calculatePart1(readAsLines("day04.txt")))
     }
 
     @Test
     fun part2() {
-        println(calculatePart2(Input.readAsLines("day04.txt")))
+        println(calculatePart2(readAsLines("day04.txt")))
     }
 
     @Test
     fun example1() {
-        val count = calculatePart1(Input.readAsLines("day04-example.txt"))
+        val count = calculatePart1(readAsLines("day04-example.txt"))
         assertEquals(2, count)
     }
 
     @Test
     fun example2() {
-        val count = calculatePart2(Input.readAsLines("day04-example.txt"))
+        val count = calculatePart2(readAsLines("day04-example.txt"))
         assertEquals(4, count)
     }
 

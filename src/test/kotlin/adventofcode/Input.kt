@@ -18,10 +18,8 @@ package adventofcode
 
 import java.io.File
 
-object Input {
-    fun readAsLines(name: String) = File(resourceName(name)).readLines()
+fun readAsLines(name: String) = File(resourceName(name)).readLines()
 
-    private fun resourceName(name: String) = "src/test/resources/${name}"
+private fun resourceName(name: String) = "src/test/resources/${name}"
 
-    fun readAsString(name: String) = File(resourceName(name)).readText();
-}
+fun readAsString(name: String) = File(resourceName(name)).readText();

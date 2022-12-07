@@ -17,6 +17,7 @@
 package adventofcode
 
 import org.junit.Test
+import kotlin.test.assertEquals
 
 const val WIN = 6
 const val LOSE = 0
@@ -53,14 +54,25 @@ class Day02 {
     )
 
     @Test
+    fun example1() {
+        assertEquals(15, calculatePart1(readAsLines("day02-example.txt")))
+    }
+
+    @Test
     fun part1() {
-        val lines = Input.readAsLines("day02.txt")
-        println(lines.sumOf { it -> part1Scores.getOrDefault(it, 0) })
+        println(calculatePart1(readAsLines("day02.txt")))
+    }
+
+    @Test
+    fun example2() {
+        assertEquals(12, calculatePart2(readAsLines("day02-example.txt")))
     }
 
     @Test
     fun part2() {
-        val lines = Input.readAsLines("day02.txt")
-        println(lines.sumOf { it -> part2Scores.getOrDefault(it, 0) })
+        println(calculatePart2(readAsLines("day02.txt")))
     }
+
+    private fun calculatePart1(lines: List<String>) = lines.sumOf { it -> part1Scores.getOrDefault(it, 0) }
+    private fun calculatePart2(lines: List<String>) = lines.sumOf { it -> part2Scores.getOrDefault(it, 0) }
 }

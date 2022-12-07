@@ -17,6 +17,7 @@
 package adventofcode
 
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class Day03 {
     private fun Char.priority() = if (isUpperCase()) code - 'A'.code + 27 else code - 'a'.code + 1
@@ -25,23 +26,32 @@ class Day03 {
 
     private fun String.splitIntoCompartments() = chunked(length/2)
     @Test
-    fun part1() {
-        val rucksacks = Input.readAsLines("day03.txt")
-        println(
-            rucksacks
-                .map { it.splitIntoCompartments() }
-                .map { commonChar(it) }
-                .sumOf { it.priority() }
-        )
+    fun example1() {
+        assertEquals(157, calculatePart1(readAsLines("day03-example.txt")))
     }
+
+    @Test
+    fun part1() {
+        println(calculatePart1(readAsLines("day03.txt")))
+    }
+
+    @Test
+    fun example2() {
+        assertEquals(70, calculatePart2(readAsLines("day03-example.txt")))
+    }
+
     @Test
     fun part2() {
-        val rucksacks = Input.readAsLines("day03.txt")
-        println(
-            rucksacks
-                .chunked(3)
-                .map { commonChar(it) }
-                .sumOf { it.priority() }
-        )
+        println(calculatePart2(readAsLines("day03.txt")))
     }
+
+    private fun calculatePart2(rucksacks: List<String>) = rucksacks
+        .chunked(3)
+        .map { commonChar(it) }
+        .sumOf { it.priority() }
+
+    private fun calculatePart1(rucksacks: List<String>) = rucksacks
+        .map { it.splitIntoCompartments() }
+        .map { commonChar(it) }
+        .sumOf { it.priority() }
 }

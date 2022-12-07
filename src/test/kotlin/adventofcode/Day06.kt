@@ -26,22 +26,22 @@ class Day06 {
 
     @Test
     fun example1() {
-        assertEquals(7, calculatePart1(Input.readAsString("day06-example.txt")))
+        assertEquals(7, calculatePart1(readAsString("day06-example.txt")))
     }
 
     @Test
     fun part1() {
-        println(calculatePart1(Input.readAsString("day06.txt")))
+        println(calculatePart1(readAsString("day06.txt")))
     }
 
     @Test
     fun example2() {
-        assertEquals(19, calculatePart2(Input.readAsString("day06-example.txt")))
+        assertEquals(19, calculatePart2(readAsString("day06-example.txt")))
     }
 
     @Test
     fun part2() {
-        println(calculatePart2(Input.readAsString("day06.txt")))
+        println(calculatePart2(readAsString("day06.txt")))
     }
 
     private fun calculatePart1(input: String): Int = input.findUniqueChars(4)

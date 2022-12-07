@@ -18,23 +18,37 @@ package adventofcode
 
 
 import org.junit.Test
-import java.util.*
-import kotlin.math.max
+import kotlin.test.assertEquals
 
 class Day01 {
 
     @Test
+    fun example1() {
+        assertEquals(24000, calculatePart1(readAsString("day01-example.txt")))
+    }
+
+    @Test
     fun part1() {
-        println(readCalorieCounts().first())
+        println(calculatePart1(readAsString("day01.txt")))
+    }
+
+    @Test
+    fun example2() {
+        assertEquals(45000, calculatePart2(readAsString("day01-example.txt")))
     }
 
     @Test
     fun part2() {
-        println(readCalorieCounts().take(3).sum())
+        println(calculatePart2(readAsString("day01.txt")))
     }
 
-    private fun readCalorieCounts(): List<Int> {
-        return Input.readAsString("day01.txt")
+
+    private fun calculatePart1(input: String): Int = readCalorieCounts(input).first()
+    private fun calculatePart2(input: String): Int = readCalorieCounts(input).take(3).sum()
+
+
+    fun readCalorieCounts(input: String): List<Int> {
+        return input
             .split("\n\n")
             .map { chunk -> chunk.split("\n").sumOf { it.toInt() } }
             .sortedDescending();

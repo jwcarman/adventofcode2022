@@ -22,25 +22,25 @@ import kotlin.test.assertEquals
 class Day05 {
     @Test
     fun example1() {
-        val input = Input.readAsString("day05-example.txt")
+        val input = readAsString("day05-example.txt")
         assertEquals("CMZ", calculatePart1(input))
     }
 
     @Test
     fun part1() {
-        val input = Input.readAsString("day05.txt")
+        val input = readAsString("day05.txt")
         println(calculatePart1(input))
     }
 
     @Test
     fun example2() {
-        val input = Input.readAsString("day05-example.txt")
+        val input = readAsString("day05-example.txt")
         assertEquals("MCD", calculatePart2(input))
     }
 
     @Test
     fun part2() {
-        val input = Input.readAsString("day05.txt")
+        val input = readAsString("day05.txt")
         println(calculatePart2(input))
     }
 
