@@ -19,10 +19,11 @@ package adventofcode
 import org.junit.Test
 import kotlin.test.assertEquals
 
-const val totalFileSystemSize = 70000000
-const val requiredSpace = 30000000
+const val TOTAL_SPACE = 70000000
+const val REQUIRED_SPACE = 30000000
 
 class Day07 {
+    private fun String.isNumeric(): Boolean = all { char -> char.isDigit() }
 
     @Test
     fun example1() {
@@ -44,26 +45,31 @@ class Day07 {
         println(calculatePart2(readAsLines("day07.txt")))
     }
 
-    private fun String.isNumeric(): Boolean = all { char -> char.isDigit() }
 
     private fun calculatePart1(lines: List<String>): Int {
-        val dirSizes = calculateDirectorySizes(lines)
-        return dirSizes.values.filter { it <= 100000 }.sum()
+        val fs = buildFilesystem(lines)
+        return fs.findFiles { (_, size) -> size <= 100000 }.values.sum()
     }
 
-    private fun calculateDirectorySizes(lines: List<String>): MutableMap<String, Int> {
-        val filesystem = Filesystem()
+    private fun calculatePart2(lines: List<String>): Int {
+        val fs = buildFilesystem(lines)
+        val used = fs.sizeOf("/")
+        val unused = TOTAL_SPACE - used
+        val needed = REQUIRED_SPACE - unused
+        return fs.findFiles { (_, size) -> size >= needed }.values.sorted().first()
+    }
 
+    private fun buildFilesystem(lines: List<String>): Filesystem {
+        val fs = Filesystem()
         lines.forEach { line ->
             val splits = line.split(" ")
             when {
-                line == "$ cd .." -> filesystem.cdup()
-                line.startsWith("$ cd ") -> filesystem.cd(splits.last())
-                splits[0].isNumeric() -> filesystem.addFile(splits[0].toInt())
+                line == "$ cd .." -> fs.cdup()
+                line.startsWith("$ cd ") -> fs.cd(splits.last())
+                splits[0].isNumeric() -> fs.addFile(splits[0].toInt())
             }
         }
-
-        return filesystem.dirSizes
+        return fs
     }
 
     class Filesystem {
@@ -78,6 +84,8 @@ class Day07 {
             }
         }
 
+        fun sizeOf(dir: String): Int = dirSizes.getOrDefault(dir, -1)
+
         fun cdup() {
             pwd.removeFirst()
         }
@@ -87,14 +95,7 @@ class Day07 {
                 dirSizes[dir] = dirSizes.getOrDefault(dir, 0) + size
             }
         }
-    }
 
-    private fun calculatePart2(lines: List<String>): Int {
-        val directorySizes = calculateDirectorySizes(lines)
-        val usedSpace = directorySizes.getOrDefault("/", 0)
-        val unUsedSpace = totalFileSystemSize - usedSpace
-        val requiredToDelete = requiredSpace - unUsedSpace
-        return directorySizes.values.filter { it >= requiredToDelete }.sorted().first()
+        fun findFiles(predicate: (Map.Entry<String, Int>) -> Boolean) = dirSizes.filter(predicate)
     }
-
 }
