@@ -41,12 +41,6 @@ class Day06 {
         println(calculatePart2(Input.readAsString("day06.txt")))
     }
 
-    private fun String.uniqueCharCount(): Int {
-        val set = mutableSetOf<Char>()
-        set.addAll(toCharArray().asList())
-        return set.size
-    }
-
     private fun calculatePart1(input: String): Int {
         return findFirstUniqueCharacterWindow(input, 4)
     }
@@ -57,6 +51,6 @@ class Day06 {
 
     private fun findFirstUniqueCharacterWindow(input: String, windowSize: Int): Int {
         return input.windowed(windowSize)
-            .indexOfFirst { it.uniqueCharCount() == windowSize } + windowSize
+            .indexOfFirst { it.toSet().size == windowSize } + windowSize
     }
 }
