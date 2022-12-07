@@ -47,7 +47,7 @@ class Day01 {
     private fun calculatePart2(input: String): Int = readCalorieCounts(input).take(3).sum()
 
 
-    fun readCalorieCounts(input: String): List<Int> = input
+    private fun readCalorieCounts(input: String): List<Int> = input
         .split("\n\n")
         .map { chunk -> chunk.split("\n").sumOf { it.toInt() } }
         .sortedDescending()

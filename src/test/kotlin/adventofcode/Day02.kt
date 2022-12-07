@@ -73,6 +73,6 @@ class Day02 {
         println(calculatePart2(readAsLines("day02.txt")))
     }
 
-    private fun calculatePart1(lines: List<String>) = lines.sumOf { it -> part1Scores.getOrDefault(it, 0) }
-    private fun calculatePart2(lines: List<String>) = lines.sumOf { it -> part2Scores.getOrDefault(it, 0) }
+    private fun calculatePart1(lines: List<String>) = lines.sumOf { part1Scores.getOrDefault(it, 0) }
+    private fun calculatePart2(lines: List<String>) = lines.sumOf { part2Scores.getOrDefault(it, 0) }
 }
