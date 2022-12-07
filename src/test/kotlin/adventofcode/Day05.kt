@@ -55,7 +55,7 @@ class Day05 {
 
     private fun calculateAnswer(input: String, crane: Crane): String {
         val splits = input.split("\n\n")
-        val stacksMap = parseStacksMap(splits)
+        val stacksMap = parseStacksMap(splits[0])
         splits[1].lines()
             .forEach { instruction ->
                 val (amount, srcNum, destNum) = Regex("move (\\d+) from (\\d+) to (\\d+)").matchEntire(instruction)!!.destructured
@@ -69,21 +69,24 @@ class Day05 {
     }
 
 
-    private fun parseStacksMap(splits: List<String>): MutableMap<Int, CargoStack> {
-        val stacksMap = mutableMapOf<Int, MutableList<Char>>()
-        splits[0].lines().reversed().tail()
+    private fun parseStacksMap(input: String): Map<Int, CargoStack> {
+        val stacksMap = mutableMapOf<Int, CargoStack>()
+        input
+            .replace("]    ", "] [-]")
+            .replace("     ", " [-] ")
+            .replace("    ", "[-] ")
+            .replace("[", "")
+            .replace("]", "")
+            .lines().reversed().tail()
             .forEach { line ->
-                var ndx = 1
-                while (ndx < line.length) {
-                    val c = line[ndx]
-                    if (c != ' ') {
-                        val stack = stacksMap.getOrPut((ndx + 3) / 4, ::mutableListOf)
-                        stack.push(c)
+                line.split(' ').forEachIndexed{ index, label ->
+                    if("-" != label) {
+                        val stack = stacksMap.getOrPut(index + 1, ::mutableListOf)
+                        stack.push(label.first())
                     }
-                    ndx += 4
                 }
             }
-        return stacksMap
+        return stacksMap.toMap()
     }
 
     interface Crane {
