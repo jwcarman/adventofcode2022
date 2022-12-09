@@ -24,38 +24,6 @@ typealias Rope = List<Day09.Point2D>
 
 class Day09 {
 
-    data class Point2D(private val x: Int, private val y: Int) {
-
-        fun move(direction: Char): Point2D {
-            return when (direction) {
-                'U' -> Point2D(x, y + 1)
-                'D' -> Point2D(x, y - 1)
-                'L' -> Point2D(x - 1, y)
-                'R' -> Point2D(x + 1, y)
-                else -> {
-                    throw IllegalArgumentException("Direction $direction not supported!")
-                }
-            }
-        }
-
-        operator fun plus(tail: List<Point2D>): List<Point2D> = listOf(this) + tail
-
-        fun convergeOn(head: Point2D): Point2D {
-            val dx = head.x - x
-            val dy = head.y - y
-            if (abs(dx) > 1 && abs(dy) > 1) {
-                return Point2D(x + (dx / 2), y + (dy / 2))
-            }
-            if (abs(dx) > 1) {
-                return Point2D(x + (dx / 2), head.y)
-            }
-            if (abs(dy) > 1) {
-                return Point2D(head.x, y + (dy / 2))
-            }
-            return this
-        }
-    }
-
     @Test
     fun example1() {
         assertEquals(13, calculatePart1(readAsLines("day09-example1.txt")))
@@ -122,5 +90,37 @@ class Day09 {
             return listOf()
         }
         return Point2D(0, 0) + buildRope(ropeLength - 1)
+    }
+
+    data class Point2D(private val x: Int, private val y: Int) {
+
+        fun move(direction: Char): Point2D {
+            return when (direction) {
+                'U' -> Point2D(x, y + 1)
+                'D' -> Point2D(x, y - 1)
+                'L' -> Point2D(x - 1, y)
+                'R' -> Point2D(x + 1, y)
+                else -> {
+                    throw IllegalArgumentException("Direction $direction not supported!")
+                }
+            }
+        }
+
+        operator fun plus(tail: List<Point2D>): List<Point2D> = listOf(this) + tail
+
+        fun convergeOn(head: Point2D): Point2D {
+            val dx = head.x - x
+            val dy = head.y - y
+            if (abs(dx) > 1 && abs(dy) > 1) {
+                return Point2D(x + (dx / 2), y + (dy / 2))
+            }
+            if (abs(dx) > 1) {
+                return Point2D(x + (dx / 2), head.y)
+            }
+            if (abs(dy) > 1) {
+                return Point2D(head.x, y + (dy / 2))
+            }
+            return this
+        }
     }
 }
