@@ -16,7 +16,6 @@
 
 package adventofcode
 
-import adventofcode.util.Coordinate
 import adventofcode.util.Table
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -46,45 +45,29 @@ class Day08 {
 
     private fun calculatePart1(input: List<String>): Int {
         val forrest = Forrest(input.map { it.toList().map { c -> c - '0' } })
-        return forrest.coords().filter { forrest.isVisible(it) }.count()
+        return forrest.cells().filter { it.isVisible() }.count()
     }
 
     private fun calculatePart2(input: List<String>): Int {
         val forrest = Forrest(input.map { it.toList().map { c -> c - '0' } })
-        return forrest.coords().maxOf { forrest.scenicScoreOf(it) }
+        return forrest.cells().maxOf { it.scenicScore() }
     }
 
-    private fun Forrest.viewingDistance(maxHeight: Int, coordinates: List<Coordinate>): Int {
-        val visible = coordinates.takeWhile { valueAt(it) < maxHeight }
-        if (visible.isEmpty()) {
-            return 1
-        }
-        if (isEdge(visible.last())) {
-            return visible.size
-        }
-        return visible.size + 1
+    private fun Table<Int>.Cell.scenicScore(): Int {
+        val height = value()
+        return westOf().takeWhileInclusive { it.value() < height }.count() *
+                eastOf().takeWhileInclusive { it.value() < height }.count() *
+                northOf().takeWhileInclusive { it.value() < height }.count() *
+                southOf().takeWhileInclusive { it.value() < height }.count()
+
     }
 
-    private fun Forrest.scenicScoreOf(c: Coordinate): Int {
-        if (isEdge(c)) {
-            return 0
-        }
-        val height = valueAt(c)
-        return viewingDistance(height, westOf(c)) *
-                viewingDistance(height, eastOf(c)) *
-                viewingDistance(height, northOf(c)) *
-                viewingDistance(height, southOf(c))
-    }
-
-    private fun Forrest.isVisible(c: Coordinate): Boolean {
-        if (isEdge(c)) {
-            return true
-        }
-        val height = valueAt(c)
-        return westOf(c).all { valueAt(it) < height } ||
-                eastOf(c).all { valueAt(it) < height } ||
-                northOf(c).all { valueAt(it) < height } ||
-                southOf(c).all { valueAt(it) < height }
+    private fun Table<Int>.Cell.isVisible(): Boolean {
+        val height = value()
+        return westOf().all { it.value() < height } ||
+                eastOf().all { it.value() < height } ||
+                northOf().all { it.value() < height } ||
+                southOf().all { it.value() < height }
     }
 }
 

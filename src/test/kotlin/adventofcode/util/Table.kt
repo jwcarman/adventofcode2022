@@ -16,14 +16,23 @@
 
 package adventofcode.util
 
-data class Coordinate(val x: Int, val y: Int)
-class Table<T>(private val values: List<List<T>>) {
-    fun isEdge(c: Coordinate): Boolean = c.x == 0 || c.y == 0 || c.x == width() - 1 || c.y == height() - 1
 
-    fun coords() = sequence<Coordinate> {
+class Table<T>(private val values: List<List<T>>) {
+    inner class Cell(val x: Int, val y: Int) {
+        fun isEdge() = x == 0 || y == 0 || x == width() - 1 || y == height() - 1
+
+        fun value() = values[y][x]
+
+        fun westOf() = (x - 1 downTo 0).map { Cell(it, y) }
+        fun eastOf() = ((x + 1) until width()).map { Cell(it, y) }
+        fun northOf() = (y - 1 downTo 0).map { Cell(x, it) }
+        fun southOf() = (y + 1 until height()).map { Cell(x, it) }
+    }
+
+    fun cells() = sequence {
         for (y in 0 until height()) {
             for (x in 0 until width()) {
-                yield(Coordinate(x, y))
+                yield(Cell(x, y))
             }
         }
     }
@@ -31,10 +40,4 @@ class Table<T>(private val values: List<List<T>>) {
     fun width() = values[0].size
 
     fun height() = values.size
-
-    fun valueAt(c: Coordinate) = values[c.y][c.x]
-    fun westOf(c: Coordinate) = (c.x - 1 downTo 0).map { Coordinate(it, c.y) }
-    fun eastOf(c: Coordinate) = ((c.x + 1) until width()).map { Coordinate(it, c.y) }
-    fun northOf(c: Coordinate) = (c.y - 1 downTo 0).map { Coordinate(c.x, it) }
-    fun southOf(c: Coordinate) = (c.y + 1 until height()).map { Coordinate(c.x, it) }
 }

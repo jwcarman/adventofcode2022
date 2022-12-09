@@ -19,3 +19,12 @@ package adventofcode
 fun <T> List<T>.tail() = drop(1)
 
 fun <T> List<T>.head() = first()
+
+inline fun <T> List<T>.takeWhileInclusive(predicate: (T) -> Boolean): List<T> {
+    var shouldContinue = true
+    return takeWhile {
+        val result = shouldContinue
+        shouldContinue = predicate(it)
+        result
+    }
+}
