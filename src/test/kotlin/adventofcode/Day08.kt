@@ -20,8 +20,6 @@ import adventofcode.util.Table
 import org.junit.Test
 import kotlin.test.assertEquals
 
-typealias Forrest = Table<Int>
-
 class Day08 {
     @Test
     fun example1() {
@@ -44,12 +42,12 @@ class Day08 {
     }
 
     private fun calculatePart1(input: List<String>): Int {
-        val forrest = Forrest(input.map { it.toList().map { c -> c - '0' } })
+        val forrest = Table(input.map { it.toList().map { c -> c - '0' } })
         return forrest.cells().filter { it.isVisible() }.count()
     }
 
     private fun calculatePart2(input: List<String>): Int {
-        val forrest = Forrest(input.map { it.toList().map { c -> c - '0' } })
+        val forrest = Table(input.map { it.toList().map { c -> c - '0' } })
         return forrest.cells().maxOf { it.scenicScore() }
     }
 
@@ -64,7 +62,6 @@ class Day08 {
                 northOf().viewingDistance() *
                 southOf().viewingDistance()
     }
-
 
 
     private fun Table<Int>.Cell.isVisible(): Boolean {

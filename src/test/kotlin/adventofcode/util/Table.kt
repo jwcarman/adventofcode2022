@@ -18,7 +18,7 @@ package adventofcode.util
 
 
 class Table<T>(private val values: List<List<T>>) {
-    inner class Cell(val x: Int, val y: Int) {
+    inner class Cell(private val x: Int, private val y: Int) {
         fun isEdge() = x == 0 || y == 0 || x == width() - 1 || y == height() - 1
 
         fun value() = values[y][x]
