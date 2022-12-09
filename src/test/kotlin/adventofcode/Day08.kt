@@ -56,13 +56,16 @@ class Day08 {
 
     private fun Table<Int>.Cell.scenicScore(): Int {
         val maxHeight = value()
-        return westOf().viewingDistance(maxHeight) *
-                eastOf().viewingDistance(maxHeight) *
-                northOf().viewingDistance(maxHeight) *
-                southOf().viewingDistance(maxHeight)
+
+        fun List<Table<Int>.Cell>.viewingDistance() = takeWhileInclusive { it.value() < maxHeight }.count()
+
+        return westOf().viewingDistance() *
+                eastOf().viewingDistance() *
+                northOf().viewingDistance() *
+                southOf().viewingDistance()
     }
 
-    private fun List<Table<Int>.Cell>.viewingDistance(maxHeight:Int) = takeWhileInclusive { it.value() < maxHeight }.count()
+
 
     private fun Table<Int>.Cell.isVisible(): Boolean {
         val height = value()
