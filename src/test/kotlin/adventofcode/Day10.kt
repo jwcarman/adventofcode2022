@@ -54,13 +54,13 @@ class Day10 {
     private fun calculatePart1(input: String): Int {
         return registerValues(input.lines())
             .mapIndexed { index, value -> (index + 1) * value }
-            .filterIndexed { index, _ -> index in setOf(19, 59, 99, 139, 179, 219) }
+            .filterIndexed { index, _ -> (index - 19) % 40 == 0 }
             .sum()
     }
 
     private fun calculatePart2(input: String): String {
         return registerValues(input.lines())
-            .foldIndexed(""){ index, acc, value ->
+            .foldIndexed("") { index, acc, value ->
                 if (abs(index % 40 - value) < 2) {
                     "$acc#"
                 } else {
