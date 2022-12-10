@@ -55,6 +55,7 @@ class Day10 {
         return registerValues(input.lines())
             .mapIndexed { index, value -> (index + 1) * value }
             .filterIndexed { index, _ -> (index - 19) % 40 == 0 }
+            .take(6)
             .sum()
     }
 
