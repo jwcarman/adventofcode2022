@@ -56,7 +56,7 @@ class Day07 {
         val used = fs.sizeOf("/")
         val unused = TOTAL_SPACE - used
         val needed = REQUIRED_SPACE - unused
-        return fs.findFiles { (_, size) -> size >= needed }.values.sorted().first()
+        return fs.findFiles { (_, size) -> size >= needed }.values.minOf { it }
     }
 
     private fun buildFilesystem(lines: List<String>): Filesystem {
