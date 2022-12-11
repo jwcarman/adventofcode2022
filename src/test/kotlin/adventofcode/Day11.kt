@@ -50,8 +50,8 @@ class Day11 {
 
     private fun calculatePart2(input: String): Long {
         val monkeys = parseMonkeys(input)
-        val moderator = monkeys.map { it.testDivisor }.reduce(Long::times)
-        return playKeepAway(10000, monkeys) { it % moderator }
+        val productOfDivisors = monkeys.map { it.testDivisor }.reduce(Long::times)
+        return playKeepAway(10000, monkeys) { it % productOfDivisors }
     }
 
     private fun playKeepAway(rounds: Int, monkeys: List<Monkey>, worryLevelFn: (Long) -> Long): Long {
