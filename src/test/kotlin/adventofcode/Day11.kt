@@ -44,7 +44,7 @@ class Day11 {
     }
 
     private fun calculatePart1(input: String): Long {
-        val monkeys = input.split("\n\n").map { parseMonkey(it) }
+        val monkeys = parseInput(input)
         val inspectionCounts = monkeys.map { 0L }.toMutableList()
         repeat(20) {
             monkeys.forEachIndexed { i, monkey ->
@@ -56,11 +56,11 @@ class Day11 {
                 }
             }
         }
-        return inspectionCounts.sortedDescending().take(2).fold(1L) { acc, l -> acc * l }
+        return monkeyBusiness(inspectionCounts)
     }
 
     private fun calculatePart2(input: String): Long {
-        val monkeys = input.split("\n\n").map { parseMonkey(it) }
+        val monkeys = parseInput(input)
         val inspectionCounts = monkeys.map { 0L }.toMutableList()
         val moderator = monkeys.map { it.testDivisor }.fold(1L) { acc, l -> acc * l }
         repeat(10000) {
@@ -73,9 +73,13 @@ class Day11 {
                 }
             }
         }
-        return inspectionCounts.sortedDescending().take(2).fold(1L) { acc, l -> acc * l }
+        return monkeyBusiness(inspectionCounts)
     }
 
+    private fun monkeyBusiness(inspectionCounts: MutableList<Long>) =
+        inspectionCounts.sortedDescending().take(2).fold(1L) { acc, l -> acc * l }
+
+    private fun parseInput(input: String) = input.split("\n\n").map { parseMonkey(it) }
 
     data class Monkey(
         val items: MutableList<Long>,
