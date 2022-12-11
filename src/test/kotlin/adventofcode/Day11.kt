@@ -117,8 +117,10 @@ class Day11 {
     private fun parseOperation(expression: String): (Long) -> Long {
         return when {
             expression == "old * old" -> { old -> old * old }
-            expression.startsWith("old *") -> { old -> old * expression.substringAfterLast(' ').toLong() }
-            else -> { old -> old + expression.substringAfterLast(' ').toLong() }
+            expression.startsWith("old *") -> { old -> old * parseOperand(expression) }
+            else -> { old -> old + parseOperand(expression) }
         }
     }
+
+    private fun parseOperand(expression: String) = expression.substringAfterLast(' ').toLong()
 }
