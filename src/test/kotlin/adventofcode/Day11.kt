@@ -59,7 +59,7 @@ class Day11 {
         repeat(rounds) {
             monkeys.forEachIndexed { i, monkey ->
                 while (monkey.items.isNotEmpty()) {
-                    val (recipient,worryLevel) = monkey.inspectItem(worryLevelFn)
+                    val (recipient, worryLevel) = monkey.inspectItem(worryLevelFn)
                     monkeys[recipient].items.add(worryLevel)
                     inspectionCounts[i]++
                 }
