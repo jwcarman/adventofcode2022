@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package adventofcode
+package adventofcode.util
 
 import java.io.File
 
 fun readAsLines(name: String) = File(resourceName(name)).readLines()
+
+fun <T> readObjects(name: String, fn: (String) -> T): List<T> = readAsLines(name).map(fn)
 
 private fun resourceName(name: String) = "src/test/resources/${name}"
 

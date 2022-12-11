@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package adventofcode
+package adventofcode.util
 
 fun <T> List<T>.tail() = drop(1)
 

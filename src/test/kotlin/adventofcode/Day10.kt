@@ -16,6 +16,7 @@
 
 package adventofcode
 
+import adventofcode.util.readAsString
 import org.junit.Test
 import kotlin.math.abs
 import kotlin.test.assertEquals
@@ -31,6 +32,15 @@ class Day10 {
         #######.......#######.......#######.....
     """.trimIndent()
 
+    private val part2Output = """
+        ###..####.####.#..#.####.####.#..#..##..
+        #..#....#.#....#.#..#....#....#..#.#..#.
+        #..#...#..###..##...###..###..####.#..#.
+        ###...#...#....#.#..#....#....#..#.####.
+        #.#..#....#....#.#..#....#....#..#.#..#.
+        #..#.####.####.#..#.####.#....#..#.#..#.
+    """.trimIndent()
+
     @Test
     fun example1() {
         assertEquals(13140, calculatePart1(readAsString("day10-example.txt")))
@@ -38,7 +48,7 @@ class Day10 {
 
     @Test
     fun part1() {
-        println(calculatePart1(readAsString("day10.txt")))
+        assertEquals(14820, calculatePart1(readAsString("day10.txt")))
     }
 
     @Test
@@ -48,7 +58,7 @@ class Day10 {
 
     @Test
     fun part2() {
-        println(calculatePart2(readAsString("day10.txt")))
+        assertEquals(part2Output, calculatePart2(readAsString("day10.txt")))
     }
 
     private fun calculatePart1(input: String): Int {

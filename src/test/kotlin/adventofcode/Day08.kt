@@ -17,6 +17,8 @@
 package adventofcode
 
 import adventofcode.util.Table
+import adventofcode.util.readAsLines
+import adventofcode.util.takeWhileInclusive
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -28,7 +30,7 @@ class Day08 {
 
     @Test
     fun part1() {
-        println(calculatePart1(readAsLines("day08.txt")))
+        assertEquals(1803, calculatePart1(readAsLines("day08.txt")))
     }
 
     @Test
@@ -38,7 +40,7 @@ class Day08 {
 
     @Test
     fun part2() {
-        println(calculatePart2(readAsLines("day08.txt")))
+        assertEquals(268912, calculatePart2(readAsLines("day08.txt")))
     }
 
     private fun calculatePart1(input: List<String>): Int {

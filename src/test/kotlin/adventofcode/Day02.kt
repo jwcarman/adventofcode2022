@@ -16,6 +16,7 @@
 
 package adventofcode
 
+import adventofcode.util.readAsLines
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -60,7 +61,7 @@ class Day02 {
 
     @Test
     fun part1() {
-        println(calculatePart1(readAsLines("day02.txt")))
+        assertEquals(11873, calculatePart1(readAsLines("day02.txt")))
     }
 
     @Test
@@ -70,7 +71,7 @@ class Day02 {
 
     @Test
     fun part2() {
-        println(calculatePart2(readAsLines("day02.txt")))
+        assertEquals(12014, calculatePart2(readAsLines("day02.txt")))
     }
 
     private fun calculatePart1(lines: List<String>) = lines.sumOf { part1Scores.getOrDefault(it, 0) }

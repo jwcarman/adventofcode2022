@@ -16,6 +16,7 @@
 
 package adventofcode
 
+import adventofcode.util.readAsString
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -31,7 +32,7 @@ class Day06 {
 
     @Test
     fun part1() {
-        println(calculatePart1(readAsString("day06.txt")))
+        assertEquals(1647, calculatePart1(readAsString("day06.txt")))
     }
 
     @Test
@@ -41,7 +42,7 @@ class Day06 {
 
     @Test
     fun part2() {
-        println(calculatePart2(readAsString("day06.txt")))
+        assertEquals(2447, calculatePart2(readAsString("day06.txt")))
     }
 
     private fun calculatePart1(input: String): Int = input.findUniqueChars(4)

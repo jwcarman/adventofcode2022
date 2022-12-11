@@ -16,6 +16,7 @@
 
 package adventofcode
 
+import adventofcode.util.readAsLines
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -26,25 +27,25 @@ class Day04 {
     private fun IntRange.overlaps(other: IntRange) = last >= other.first && first <= other.last
 
     @Test
-    fun part1() {
-        println(calculatePart1(readAsLines("day04.txt")))
-    }
-
-    @Test
-    fun part2() {
-        println(calculatePart2(readAsLines("day04.txt")))
-    }
-
-    @Test
     fun example1() {
         val count = calculatePart1(readAsLines("day04-example.txt"))
         assertEquals(2, count)
     }
 
     @Test
+    fun part1() {
+        assertEquals(536, calculatePart1(readAsLines("day04.txt")))
+    }
+
+    @Test
     fun example2() {
         val count = calculatePart2(readAsLines("day04-example.txt"))
         assertEquals(4, count)
+    }
+
+    @Test
+    fun part2() {
+        assertEquals(845, calculatePart2(readAsLines("day04.txt")))
     }
 
     private fun calculatePart1(lines: List<String>): Int =

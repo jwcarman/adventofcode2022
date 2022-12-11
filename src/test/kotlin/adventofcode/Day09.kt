@@ -16,6 +16,9 @@
 
 package adventofcode
 
+import adventofcode.util.head
+import adventofcode.util.readAsLines
+import adventofcode.util.tail
 import org.junit.Test
 import kotlin.math.abs
 import kotlin.test.assertEquals
@@ -32,7 +35,7 @@ class Day09 {
     @Test
     fun part1() {
         val instructions = readAsLines("day09.txt")
-        println(calculatePart1(instructions))
+        assertEquals(6044, calculatePart1(instructions))
     }
 
     @Test
@@ -42,7 +45,7 @@ class Day09 {
 
     @Test
     fun part2() {
-        println(calculatePart2(readAsLines("day09.txt")))
+        assertEquals(2384, calculatePart2(readAsLines("day09.txt")))
     }
 
     private fun calculatePart1(instructions: List<String>): Int {
