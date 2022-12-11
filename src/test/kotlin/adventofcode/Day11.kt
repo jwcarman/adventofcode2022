@@ -59,8 +59,7 @@ class Day11 {
         repeat(rounds) {
             monkeys.forEachIndexed { i, monkey ->
                 while (monkey.items.isNotEmpty()) {
-                    val worryLevel = worryLevelFn.invoke(monkey.inspectItem())
-                    val recipient = monkey.test(worryLevel)
+                    val (recipient,worryLevel) = monkey.inspectItem(worryLevelFn)
                     monkeys[recipient].items.add(worryLevel)
                     inspectionCounts[i]++
                 }
@@ -81,15 +80,12 @@ class Day11 {
         val pass: Int,
         val fail: Int
     ) {
-        fun inspectItem(): Long {
-            return operation.invoke(items.removeFirst())
-        }
-
-        fun test(value: Long): Int {
-            return if ((value % testDivisor) == 0L) {
-                pass
+        fun inspectItem(worryLevelFn: (Long) -> Long): Pair<Int, Long> {
+            val value = worryLevelFn(operation(items.removeFirst()))
+            return if (value % testDivisor == 0L) {
+                Pair(pass, value)
             } else {
-                fail
+                Pair(fail, value)
             }
         }
     }
