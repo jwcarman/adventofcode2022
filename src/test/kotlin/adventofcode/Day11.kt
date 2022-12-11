@@ -102,13 +102,16 @@ class Day11 {
             .split("\t")
 
         return Monkey(
-            items = fields[1].removeAll(" ").split(",").map { it.toLong() }.toMutableList(),
+            items = parseInitialItems(fields[1]),
             operation = parseOperation(fields[2]),
             testDivisor = fields[3].toLong(),
             pass = fields[4].toInt(),
             fail = fields[5].toInt()
         )
     }
+
+    private fun parseInitialItems(input: String): MutableList<Long> =
+        input.removeAll(" ").split(",").map { it.toLong() }.toMutableList()
 
     private fun parseOperation(expression: String): (Long) -> Long {
         return when {
