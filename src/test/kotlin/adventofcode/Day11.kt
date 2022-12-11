@@ -44,31 +44,24 @@ class Day11 {
     }
 
     private fun calculatePart1(input: String): Long {
-        val monkeys = parseInput(input)
-        val inspectionCounts = monkeys.map { 0L }.toMutableList()
-        repeat(20) {
-            monkeys.forEachIndexed { i, monkey ->
-                while (monkey.items.isNotEmpty()) {
-                    val worryLevel = monkey.inspectItem() / 3
-                    val recipient = monkey.test(worryLevel)
-                    monkeys[recipient].items.add(worryLevel)
-                    inspectionCounts[i]++
-                }
-            }
-        }
-        return monkeyBusiness(inspectionCounts)
+        val monkeys = parseMonkeys(input)
+        return playKeepAway(20, monkeys) { it / 3 }
     }
 
     private fun calculatePart2(input: String): Long {
-        val monkeys = parseInput(input)
-        val inspectionCounts = monkeys.map { 0L }.toMutableList()
+        val monkeys = parseMonkeys(input)
         val moderator = monkeys.map { it.testDivisor }.fold(1L) { acc, l -> acc * l }
-        repeat(10000) {
+        return playKeepAway(10000, monkeys) { it % moderator }
+    }
+
+    private fun playKeepAway(rounds: Int, monkeys: List<Monkey>, worryLevelFn: (Long) -> Long): Long {
+        val inspectionCounts = monkeys.map { 0L }.toMutableList()
+        repeat(rounds) {
             monkeys.forEachIndexed { i, monkey ->
                 while (monkey.items.isNotEmpty()) {
-                    val worryLevel = monkey.inspectItem()
+                    val worryLevel = worryLevelFn.invoke(monkey.inspectItem())
                     val recipient = monkey.test(worryLevel)
-                    monkeys[recipient].items.add(worryLevel % moderator)
+                    monkeys[recipient].items.add(worryLevel)
                     inspectionCounts[i]++
                 }
             }
@@ -79,7 +72,7 @@ class Day11 {
     private fun monkeyBusiness(inspectionCounts: MutableList<Long>) =
         inspectionCounts.sortedDescending().take(2).fold(1L) { acc, l -> acc * l }
 
-    private fun parseInput(input: String) = input.split("\n\n").map { parseMonkey(it) }
+    private fun parseMonkeys(input: String) = input.split("\n\n").map { parseMonkey(it) }
 
     data class Monkey(
         val items: MutableList<Long>,
