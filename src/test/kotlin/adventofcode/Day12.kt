@@ -41,7 +41,7 @@ class Day12 {
 
     @Test
     fun part2() {
-        assertEquals(0, calculatePart2(readAsString("day12.txt")))
+        assertEquals(492, calculatePart2(readAsString("day12.txt")))
     }
 
     private fun calculatePart1(input: String): Int {

@@ -47,42 +47,66 @@ object Graphs {
     }
 
     fun <T> bfs(start: T, end: T, neighbors: (T) -> List<T>): List<T> {
-        val queue = mutableListOf<List<T>>()
-        val visited = mutableSetOf<T>()
-        visited += start
-        queue += listOf(start)
-        while (queue.isNotEmpty()) {
-            val current = queue.removeFirst()
-            val terminus = current.last()
-            if (terminus == end) {
-                return current
-            }
-            neighbors(terminus).filter { it !in visited }.forEach { n ->
-                visited += n
-                queue += current + n
-            }
-        }
-        return listOf()
+        return search(start, end, neighbors, QueueBuffer())
     }
 
     fun <T> dfs(start: T, end: T, neighbors: (T) -> List<T>): List<T> {
-        val stack = mutableListOf<List<T>>()
+        return search(start, end, neighbors, StackBuffer())
+    }
+
+
+    private fun <T> search(start: T, end: T, neighbors: (T) -> List<T>, buffer: Buffer<List<T>>): List<T> {
         val visited = mutableSetOf<T>()
         visited += start
-        stack.add(0, listOf(start))
-        while (stack.isNotEmpty()) {
-            val current = stack.removeFirst()
+        buffer.add(listOf(start))
+        while (buffer.isNotEmpty()) {
+            val current = buffer.remove()
             val terminus = current.last()
             if (terminus == end) {
                 return current
             }
             neighbors(terminus).filter { it !in visited }.forEach { n ->
                 visited += n
-                stack.add(0, current + n)
+                buffer.add(current + n)
             }
         }
         return listOf()
     }
 
+    private interface Buffer<T> {
+        fun remove(): T
+        fun add(element: T)
+
+        fun isNotEmpty(): Boolean
+    }
+
+    class StackBuffer<T>: Buffer<T> {
+        private val stack = mutableListOf<T>()
+        override fun remove(): T {
+            return stack.removeFirst()
+        }
+
+        override fun add(element: T) {
+            stack.add(0, element)
+        }
+
+        override fun isNotEmpty(): Boolean {
+            return stack.isNotEmpty()
+        }
+    }
+    class QueueBuffer<T>: Buffer<T> {
+        private val queue = mutableListOf<T>()
+        override fun remove(): T {
+            return queue.removeFirst()
+        }
+
+        override fun add(element: T) {
+            queue.add(element)
+        }
+
+        override fun isNotEmpty(): Boolean {
+            return queue.isNotEmpty()
+        }
+    }
 
 }
