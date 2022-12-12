@@ -27,6 +27,45 @@ class Table<T>(private val values: List<List<T>>) {
         fun eastOf() = ((x + 1) until width()).map { Cell(it, y) }
         fun northOf() = (y - 1 downTo 0).map { Cell(x, it) }
         fun southOf() = (y + 1 until height()).map { Cell(x, it) }
+
+        fun neighbors(): List<Cell> {
+            val neighbors = mutableListOf<Cell>()
+            if (x > 0) {
+                neighbors.add(Cell(x - 1, y))
+            }
+            if (y > 0) {
+                neighbors.add(Cell(x, y - 1))
+            }
+            if (x < width() - 1) {
+                neighbors.add(Cell(x + 1, y))
+            }
+            if(y < height() - 1) {
+                neighbors.add(Cell(x, y + 1))
+            }
+            return neighbors.toList()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as Table<*>.Cell
+
+            if (x != other.x) return false
+            if (y != other.y) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = x
+            result = 31 * result + y
+            return result
+        }
+
+        override fun toString(): String {
+            return "($x,$y)[${value()}]"
+        }
     }
 
     fun cells() = sequence {
