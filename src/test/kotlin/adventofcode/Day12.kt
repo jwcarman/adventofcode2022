@@ -16,8 +16,8 @@
 
 package adventofcode
 
-import adventofcode.util.Graphs.bfs
 import adventofcode.util.Table
+import adventofcode.util.graph.Graphs.shortestPaths
 import adventofcode.util.readAsString
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -48,10 +48,30 @@ class Day12 {
         val table = Table(input.lines().map { it.toCharArray().toList() })
         val start = table.cells().first { it.value() == 'S' }
         val end = table.cells().first { it.value() == 'E' }
-        return shortestPathLength(start, end)
+        val shortestPaths = shortestPaths(
+            table.cells().toSet(),
+            { it.neighbors().filter { n -> checkNeighborFromStart(it, n) } },
+            { _, _ -> 1 },
+            start
+        )
+        return shortestPaths.distanceTo(end)
     }
 
-
+    private fun calculatePart2(input: String): Int {
+        val table = Table(input.lines().map { it.toCharArray().toList() })
+        val end = table.cells().first { it.value() == 'E' }
+        val shortestPaths = shortestPaths(
+            table.cells().toSet(),
+            { it.neighbors().filter { n -> checkNeighborFromEnd(it, n) } },
+            { _, _ -> 1 },
+            end
+        )
+        return table.cells()
+            .filter { normalize(it.value()) == 'a' }
+            .map { shortestPaths.distanceTo(it) }
+            .filter { it > 0 }
+            .min()
+    }
 
     private fun normalize(height: Char): Char {
         if (height == 'E') {
@@ -63,21 +83,15 @@ class Day12 {
         return height
     }
 
-    private fun checkNeighbor(src: Table<Char>.Cell, neighbor: Table<Char>.Cell): Boolean {
+    private fun checkNeighborFromStart(src: Table<Char>.Cell, neighbor: Table<Char>.Cell): Boolean {
         val srcHeight = normalize(src.value())
         val neighborHeight = normalize(neighbor.value())
         return neighborHeight <= srcHeight + 1
     }
 
-    private fun calculatePart2(input: String): Int {
-        val table = Table(input.lines().map { it.toCharArray().toList() })
-        val end = table.cells().first { it.value() == 'E' }
-        return table.cells().filter { normalize(it.value()) == 'a' }.map { shortestPathLength(it, end) }.filter { it > 0 }.min()
+    private fun checkNeighborFromEnd(src: Table<Char>.Cell, neighbor: Table<Char>.Cell): Boolean {
+        val srcHeight = normalize(src.value())
+        val neighborHeight = normalize(neighbor.value())
+        return neighborHeight >= srcHeight - 1
     }
-
-    private fun shortestPathLength(
-        start: Table<Char>.Cell,
-        end: Table<Char>.Cell
-    ) = bfs(start, end) { it.neighbors().filter { n -> checkNeighbor(it, n) } }.size - 1
-
 }
