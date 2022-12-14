@@ -17,7 +17,8 @@
 package adventofcode
 
 import adventofcode.util.Table
-import adventofcode.util.graph.Graphs.shortestPaths
+import adventofcode.util.graph.Graph
+import adventofcode.util.graph.SparseGraph
 import adventofcode.util.readAsString
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -44,33 +45,34 @@ class Day12 {
         assertEquals(492, calculatePart2(readAsString("day12.txt")))
     }
 
-    private fun calculatePart1(input: String): Int {
+    private fun buildGraph(input: String, isEdge: (Table<Char>.Cell, Table<Char>.Cell) -> Boolean): Graph<Table<Char>.Cell, Unit> {
         val table = Table(input.lines().map { it.toCharArray().toList() })
-        val start = table.cells().first { it.value() == 'S' }
-        val end = table.cells().first { it.value() == 'E' }
-        val shortestPaths = shortestPaths(
-            table.cells().toSet(),
-            { it.neighbors().filter { n -> checkNeighborFromStart(it, n) } },
-            { _, _ -> 1 },
-            start
-        )
-        return shortestPaths.distanceTo(end)
+        val graph = SparseGraph<Table<Char>.Cell, Unit>()
+        table.cells().forEach { graph.addVertex(it) }
+        table.cells().forEach { from ->
+            from.neighbors()
+                .filter { to -> isEdge(from, to) }
+                .forEach { graph.addEdge(from, it, Unit, 1.0) }
+        }
+        return graph
+    }
+
+    private fun calculatePart1(input: String): Int {
+        val graph = buildGraph(input) { from, to -> checkNeighborFromStart(from, to) }
+        val start = graph.vertices().first { it.value() == 'S' }
+        val end = graph.vertices().first { it.value() == 'E' }
+        val shortestPaths = graph.shortestPaths(start)
+        return shortestPaths.pathTo(end).size
     }
 
     private fun calculatePart2(input: String): Int {
-        val table = Table(input.lines().map { it.toCharArray().toList() })
-        val end = table.cells().first { it.value() == 'E' }
-        val shortestPaths = shortestPaths(
-            table.cells().toSet(),
-            { it.neighbors().filter { n -> checkNeighborFromEnd(it, n) } },
-            { _, _ -> 1 },
-            end
-        )
-        return table.cells()
+        val graph = buildGraph(input) { from, to -> checkNeighborFromEnd(from, to) }
+        val end = graph.vertices().first { it.value() == 'E' }
+        val shortestPaths = graph.shortestPaths(end)
+        val closest = graph.vertices()
             .filter { normalize(it.value()) == 'a' }
-            .map { shortestPaths.distanceTo(it) }
-            .filter { it > 0 }
-            .min()
+            .minBy { shortestPaths.distanceTo(it) }
+        return shortestPaths.pathTo(closest).size
     }
 
     private fun normalize(height: Char): Char {
