@@ -16,6 +16,7 @@
 
 package adventofcode
 
+import adventofcode.util.isNumeric
 import adventofcode.util.readAsLines
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -24,7 +25,6 @@ const val TOTAL_SPACE = 70000000
 const val REQUIRED_SPACE = 30000000
 
 class Day07 {
-    private fun String.isNumeric(): Boolean = all { char -> char.isDigit() }
 
     @Test
     fun example1() {

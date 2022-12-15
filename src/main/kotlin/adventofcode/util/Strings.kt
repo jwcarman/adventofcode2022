@@ -20,4 +20,5 @@ fun String.removeAll(vararg strings: String): String {
     return strings.fold(this) { acc, s -> acc.replace(Regex(s), "") }
 }
 
-fun <T> String.parse(fn: (String) -> T): T = fn(this)
+
+fun String.isNumeric(): Boolean = all { char -> char.isDigit() }
