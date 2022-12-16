@@ -33,30 +33,48 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
-        <kotlin.version>1.7.22</kotlin.version>
+        <kotlin.version>1.7.21</kotlin.version>
         <kotlin.code.style>official</kotlin.code.style>
-        <junit.version>4.13.1</junit.version>
+        <junit.version>5.9.1</junit.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib</artifactId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test-junit</artifactId>
+            <artifactId>kotlin-test-junit5</artifactId>
             <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.23.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
@@ -74,6 +92,12 @@
                         <goals>
                             <goal>compile</goal>
                         </goals>
+                        <configuration>
+                            <sourceDirs>
+                                <source>src/main/kotlin</source>
+                                <source>target/generated-sources/annotations</source>
+                            </sourceDirs>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>test-compile</id>
@@ -81,8 +105,17 @@
                         <goals>
                             <goal>test-compile</goal>
                         </goals>
+                        <configuration>
+                            <sourceDirs>
+                                <source>src/test/kotlin</source>
+                                <source>target/generated-test-sources/test-annotations</source>
+                            </sourceDirs>
+                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <jvmTarget>1.8</jvmTarget>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

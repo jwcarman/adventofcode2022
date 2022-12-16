@@ -20,7 +20,7 @@ import adventofcode.util.Table
 import adventofcode.util.graph.Graph
 import adventofcode.util.graph.SparseGraph
 import adventofcode.util.readAsString
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class Day12 {

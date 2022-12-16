@@ -19,7 +19,7 @@ package adventofcode
 import adventofcode.util.Table
 import adventofcode.util.readAsLines
 import adventofcode.util.takeWhileInclusive
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class Day08 {

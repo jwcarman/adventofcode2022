@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package adventofcode.util.graph
+package adventofcode.day15
 
-interface Graph<V : Any, E : Any> {
-    fun addVertex(value: V)
-    fun addEdge(from: V, to: V, value: E, weight: Double = 0.0)
+import adventofcode.util.geom.Point2D
+import kotlin.math.abs
 
-    fun vertices(): Set<V>
+data class Sensor(val sensorPoint: Point2D, val beaconPoint: Point2D) {
 
-    fun edge(from: V, to: V): Edge<E>?
-
-    fun neighbors(from: V): List<V>
-
-    fun shortestPaths(start: V): ShortestPaths<V> =
-        Graphs.shortestPaths(start, vertices(), ::neighbors) { from, to -> edge(from, to)!!.weight }
-
-    fun dfs(start: V, end: V): List<V> = Graphs.dfs(start, end, ::neighbors)
-    fun bfs(start: V, end: V): List<V> = Graphs.bfs(start, end, ::neighbors)
-
+    private val sensorRange = sensorPoint.manhattanDistance(beaconPoint)
+    fun horizontalScanRange(y: Int): IntRange {
+        val dist = abs(sensorPoint.y - y)
+        return if (dist > sensorRange) {
+            IntRange.EMPTY
+        } else {
+            val diff = sensorRange - dist
+            sensorPoint.x - diff..sensorPoint.x + diff
+        }
+    }
 }

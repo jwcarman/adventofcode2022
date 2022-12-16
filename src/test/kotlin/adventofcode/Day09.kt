@@ -16,14 +16,15 @@
 
 package adventofcode
 
+import adventofcode.util.geom.Point2D
 import adventofcode.util.head
 import adventofcode.util.readAsLines
 import adventofcode.util.tail
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.math.abs
 import kotlin.test.assertEquals
 
-typealias Rope = List<Day09.Point2D>
+typealias Rope = List<Point2D>
 
 class Day09 {
 
@@ -57,7 +58,7 @@ class Day09 {
     }
 
     private fun Rope.moveHead(direction: Char): Rope {
-        if(isEmpty()) {
+        if (isEmpty()) {
             return emptyList()
         }
         val h = head().move(direction)
@@ -95,35 +96,34 @@ class Day09 {
         return Point2D(0, 0) + buildRope(ropeLength - 1)
     }
 
-    data class Point2D(private val x: Int, private val y: Int) {
 
-        fun move(direction: Char): Point2D {
-            return when (direction) {
-                'U' -> Point2D(x, y + 1)
-                'D' -> Point2D(x, y - 1)
-                'L' -> Point2D(x - 1, y)
-                'R' -> Point2D(x + 1, y)
-                else -> {
-                    throw IllegalArgumentException("Direction $direction not supported!")
-                }
+    private fun Point2D.move(direction: Char): Point2D {
+        return when (direction) {
+            'U' -> Point2D(x, y + 1)
+            'D' -> Point2D(x, y - 1)
+            'L' -> Point2D(x - 1, y)
+            'R' -> Point2D(x + 1, y)
+            else -> {
+                throw IllegalArgumentException("Direction $direction not supported!")
             }
-        }
-
-        operator fun plus(tail: List<Point2D>): List<Point2D> = listOf(this) + tail
-
-        fun convergeOn(head: Point2D): Point2D {
-            val dx = head.x - x
-            val dy = head.y - y
-            if (abs(dx) > 1 && abs(dy) > 1) {
-                return Point2D(x + (dx / 2), y + (dy / 2))
-            }
-            if (abs(dx) > 1) {
-                return Point2D(x + (dx / 2), head.y)
-            }
-            if (abs(dy) > 1) {
-                return Point2D(head.x, y + (dy / 2))
-            }
-            return this
         }
     }
+
+    private operator fun Point2D.plus(tail: List<Point2D>): List<Point2D> = listOf(this) + tail
+
+    private fun Point2D.convergeOn(head: Point2D): Point2D {
+        val dx = head.x - x
+        val dy = head.y - y
+        if (abs(dx) > 1 && abs(dy) > 1) {
+            return Point2D(x + (dx / 2), y + (dy / 2))
+        }
+        if (abs(dx) > 1) {
+            return Point2D(x + (dx / 2), head.y)
+        }
+        if (abs(dy) > 1) {
+            return Point2D(head.x, y + (dy / 2))
+        }
+        return this
+    }
+
 }

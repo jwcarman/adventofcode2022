@@ -19,7 +19,7 @@ package adventofcode
 import adventofcode.util.head
 import adventofcode.util.readAsLines
 import adventofcode.util.tail
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class Day03 {

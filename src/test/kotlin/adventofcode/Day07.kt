@@ -18,7 +18,7 @@ package adventofcode
 
 import adventofcode.util.isNumeric
 import adventofcode.util.readAsLines
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 const val TOTAL_SPACE = 70000000

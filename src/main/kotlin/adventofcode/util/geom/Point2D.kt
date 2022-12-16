@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package adventofcode.util.graph
+package adventofcode.util.geom
 
-interface Graph<V : Any, E : Any> {
-    fun addVertex(value: V)
-    fun addEdge(from: V, to: V, value: E, weight: Double = 0.0)
+import kotlin.math.abs
 
-    fun vertices(): Set<V>
+data class Point2D(val x: Int, val y: Int) {
+    fun neighbors(): List<Point2D> {
+        return listOf(
+            Point2D(x - 1, y),
+            Point2D(x + 1, y),
+            Point2D(x, y - 1),
+            Point2D(x, y + 1)
+        )
+    }
 
-    fun edge(from: V, to: V): Edge<E>?
+    fun manhattanDistance(other:Point2D) = abs(x - other.x) + abs(y - other.y)
 
-    fun neighbors(from: V): List<V>
+    override fun toString(): String {
+        return "($x,$y)"
+    }
 
-    fun shortestPaths(start: V): ShortestPaths<V> =
-        Graphs.shortestPaths(start, vertices(), ::neighbors) { from, to -> edge(from, to)!!.weight }
-
-    fun dfs(start: V, end: V): List<V> = Graphs.dfs(start, end, ::neighbors)
-    fun bfs(start: V, end: V): List<V> = Graphs.bfs(start, end, ::neighbors)
-
+    fun translate(dx:Int, dy:Int) = Point2D(x + dx, y + dy)
 }

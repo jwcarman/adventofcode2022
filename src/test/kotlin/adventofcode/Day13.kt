@@ -18,7 +18,7 @@ package adventofcode
 
 import adventofcode.util.isNumeric
 import adventofcode.util.readAsString
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 private const val EMPTY_LIST = "[]"

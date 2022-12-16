@@ -18,7 +18,7 @@ package adventofcode
 
 import adventofcode.util.readAsString
 import adventofcode.util.removeAll
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class Day11 {
