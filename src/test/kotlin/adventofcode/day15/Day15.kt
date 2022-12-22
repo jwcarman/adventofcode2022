@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package adventofcode
+package adventofcode.day15
 
-import adventofcode.day15.Sensor
 import adventofcode.util.geom.Point2D
 import adventofcode.util.head
 import adventofcode.util.readAsString

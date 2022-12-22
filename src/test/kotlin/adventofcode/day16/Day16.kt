@@ -92,7 +92,7 @@ class Day16 {
             return timeRemaining <= 0 || valvesRemaining.isEmpty()
         }
 
-        override fun subProblems(): List<DynamicProgrammingState<Int>> {
+        override fun children(): List<DynamicProgrammingState<Int>> {
             return volcano.tunnelsFrom(currentValve)
                 .filter { it.to in valvesRemaining }
                 .map { SoloSearchState(this, it) }

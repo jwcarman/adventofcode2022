@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package adventofcode
+package adventofcode.day10
 
 import adventofcode.util.readAsString
 import org.junit.jupiter.api.Test

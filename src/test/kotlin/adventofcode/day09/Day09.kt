@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package adventofcode
+package adventofcode.day09
 
 import adventofcode.util.geom.Point2D
 import adventofcode.util.head
@@ -25,7 +25,6 @@ import kotlin.math.abs
 import kotlin.test.assertEquals
 
 typealias Rope = List<Point2D>
-
 class Day09 {
 
     @Test

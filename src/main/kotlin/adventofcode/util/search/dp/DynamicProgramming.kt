@@ -17,9 +17,23 @@
 package adventofcode.util.search.dp
 
 
+/**
+ * A state model for dynamic programming
+ */
 interface DynamicProgrammingState<V : Comparable<V>> {
+    /**
+     * Is this state a terminal state (has no children)?
+     */
     fun isTerminal(): Boolean
-    fun subProblems(): List<DynamicProgrammingState<V>>
+
+    /**
+     * Generate child states for this state.
+     */
+    fun children(): List<DynamicProgrammingState<V>>
+
+    /**
+     * Calculate the value of this state (not including children)
+     */
     fun value(): V
 
 }
@@ -83,8 +97,8 @@ private fun <V : Comparable<V>> optimum(
         null -> {}
         else -> return v
     }
-    val maximum =
-        add(state.value(), optimumValueOf(state.subProblems().map { optimum(it, add, cache, optimumValueOf) }))
-    cache[state] = maximum
-    return maximum
+    val optimum =
+        add(state.value(), optimumValueOf(state.children().map { optimum(it, add, cache, optimumValueOf) }))
+    cache[state] = optimum
+    return optimum
 }

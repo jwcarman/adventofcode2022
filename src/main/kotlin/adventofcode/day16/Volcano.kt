@@ -39,13 +39,6 @@ class Volcano {
         this.indexOf = valves.withIndex().associate { it.value to it.index }
     }
 
-    fun inverseFlowValves(flowValves: Set<Valve>): Set<Valve> {
-        return valves
-            .filter { it.flowRate > 0 }
-            .filter { it !in flowValves }
-            .toSet()
-    }
-
     fun flowValveSubsetPairs() = sequence {
         (0 until (1 shl valves.size - 1)).forEach { mask ->
             val inverse = mask.inv() and (1 shl valves.size-1).inv()
@@ -57,14 +50,6 @@ class Volcano {
                     .filterIndexed { index, _ -> inverse and (1 shl index) != 0 }
                     .toSet()
             ))
-        }
-    }
-
-    fun flowValveSubsets() = sequence {
-        (0 until (1 shl valves.size - 1)).forEach { mask ->
-            yield(valves
-                .filterIndexed { index, _ -> mask and (1 shl index) != 0 }
-                .toSet())
         }
     }
 

@@ -14,44 +14,37 @@
  * limitations under the License.
  */
 
-package adventofcode
-
+package adventofcode.day06
 
 import adventofcode.util.readAsString
 import org.junit.jupiter.api.Test
-
 import kotlin.test.assertEquals
 
-class Day01 {
+class Day06 {
+
+    private fun String.findUniqueChars(windowSize: Int): Int =
+        windowed(windowSize).indexOfFirst { it.toSet().size == windowSize } + windowSize
 
     @Test
     fun example1() {
-        assertEquals(24000, calculatePart1(readAsString("day01-example.txt")))
+        assertEquals(7, calculatePart1(readAsString("day06-example.txt")))
     }
 
     @Test
     fun part1() {
-        assertEquals(70116, calculatePart1(readAsString("day01.txt")))
+        assertEquals(1647, calculatePart1(readAsString("day06.txt")))
     }
 
     @Test
     fun example2() {
-        assertEquals(45000, calculatePart2(readAsString("day01-example.txt")))
+        assertEquals(19, calculatePart2(readAsString("day06-example.txt")))
     }
 
     @Test
     fun part2() {
-        assertEquals(206582, calculatePart2(readAsString("day01.txt")))
+        assertEquals(2447, calculatePart2(readAsString("day06.txt")))
     }
 
-
-    private fun calculatePart1(input: String): Int = readCalorieCounts(input).first()
-    private fun calculatePart2(input: String): Int = readCalorieCounts(input).take(3).sum()
-
-
-    private fun readCalorieCounts(input: String): List<Int> = input
-        .split("\n\n")
-        .map { chunk -> chunk.split("\n").sumOf { it.toInt() } }
-        .sortedDescending()
-
+    private fun calculatePart1(input: String): Int = input.findUniqueChars(4)
+    private fun calculatePart2(input: String): Int = input.findUniqueChars(14)
 }

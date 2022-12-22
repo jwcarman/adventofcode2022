@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package adventofcode
+package adventofcode.day12
 
 import adventofcode.util.Table
 import adventofcode.util.graph.Graph

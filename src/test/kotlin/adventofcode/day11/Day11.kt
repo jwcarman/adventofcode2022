@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package adventofcode
+package adventofcode.day11
 
 import adventofcode.util.readAsString
 import adventofcode.util.removeAll

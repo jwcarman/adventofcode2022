@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package adventofcode
+package adventofcode.day03
 
 import adventofcode.util.head
 import adventofcode.util.readAsLines

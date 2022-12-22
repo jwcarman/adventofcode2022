@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package adventofcode
+package adventofcode.day13
 
 import adventofcode.util.isNumeric
 import adventofcode.util.readAsString
