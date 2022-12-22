@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package adventofcode.util
+package adventofcode.util.geom
 
-fun <T> List<T>.tail() = drop(1)
+import kotlin.math.sign
 
-fun <T> List<T>.head() = first()
-
-inline fun <T> List<T>.takeWhileInclusive(predicate: (T) -> Boolean): List<T> {
-    var shouldContinue = true
-    return takeWhile {
-        val result = shouldContinue
-        shouldContinue = predicate(it)
-        result
-    }
-}
-
-operator fun <T> List<T>.times(other:List<T>) = sequence {
-    forEach { left->
-        other.forEach { right -> yield(Pair(left,right)) }
+data class Line2D(val begin: Point2D, val end: Point2D) {
+    fun points() = sequence {
+        var p = begin
+        var dx = (end.x - begin.x).sign
+        var dy = (end.y - begin.y).sign
+        while (p != end) {
+            yield(p)
+            p = p.translate(dx, dy)
+        }
+        yield(p)
     }
 }

@@ -18,7 +18,13 @@ package adventofcode.util.geom
 
 import kotlin.math.abs
 
-data class Point2D(val x: Int, val y: Int) {
+data class Point2D(val x: Int, val y: Int): Comparable<Point2D> {
+
+    private val comparator = Comparator.comparing(Point2D::x).thenComparing(Point2D::y)
+    override fun compareTo(other: Point2D): Int {
+        return comparator.compare(this, other)
+    }
+
     fun neighbors(): List<Point2D> {
         return listOf(
             Point2D(x - 1, y),
@@ -35,4 +41,8 @@ data class Point2D(val x: Int, val y: Int) {
     }
 
     fun translate(dx:Int, dy:Int) = Point2D(x + dx, y + dy)
+
+    companion object {
+        fun origin() = Point2D(0,0)
+    }
 }

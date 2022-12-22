@@ -24,6 +24,8 @@ interface Graph<V : Any, E : Any> {
 
     fun edge(from: V, to: V): Edge<E>?
 
+    fun edges(from:V): List<Edge<E>>
+
     fun neighbors(from: V): List<V>
 
     fun shortestPaths(start: V): ShortestPaths<V> =
@@ -31,5 +33,7 @@ interface Graph<V : Any, E : Any> {
 
     fun dfs(start: V, end: V): List<V> = Graphs.dfs(start, end, ::neighbors)
     fun bfs(start: V, end: V): List<V> = Graphs.bfs(start, end, ::neighbors)
+
+    fun reachable(start: V, maxSteps: Int) = Graphs.reachable(start, maxSteps, ::neighbors)
 
 }

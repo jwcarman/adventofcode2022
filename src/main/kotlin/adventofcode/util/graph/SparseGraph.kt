@@ -18,10 +18,10 @@ package adventofcode.util.graph
 
 class SparseGraph<V : Any, E : Any> : Graph<V, E> {
 
-    private val adjacency = mutableMapOf<V, MutableMap<V,Edge<E>>>()
+    private val adjacency = mutableMapOf<V, MutableMap<V, Edge<E>>>()
 
     override fun addVertex(value: V) {
-        adjacency[value] = mutableMapOf()
+        adjacency.putIfAbsent(value, mutableMapOf())
     }
 
     override fun addEdge(from: V, to: V, value: E, weight: Double) {
@@ -32,6 +32,12 @@ class SparseGraph<V : Any, E : Any> : Graph<V, E> {
         return adjacency[vertex(from)]!!.keys.toList()
     }
 
+    private val shortestPathsCache = mutableMapOf<V, ShortestPaths<V>>()
+
+    override fun shortestPaths(start: V): ShortestPaths<V> {
+        return shortestPathsCache.computeIfAbsent(start) { super.shortestPaths(it) }
+    }
+
     private fun vertex(value: V): V {
         if (value in adjacency) {
             return value
@@ -40,6 +46,9 @@ class SparseGraph<V : Any, E : Any> : Graph<V, E> {
     }
 
     override fun edge(from: V, to: V): Edge<E>? = adjacency[vertex(from)]!![vertex(to)]
+
+    override fun edges(from: V): List<Edge<E>> = adjacency[vertex(from)]!!.values.toList()
+
 
     override fun vertices(): Set<V> = adjacency.keys
 }

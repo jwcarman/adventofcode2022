@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-package adventofcode.util
+package adventofcode.day16
 
-fun <T> List<T>.tail() = drop(1)
+typealias SearchState = Int
 
-fun <T> List<T>.head() = first()
+fun SearchState.turnOnValve(valveIndex:Int) = this or (1 shl (16 + valveIndex))
 
-inline fun <T> List<T>.takeWhileInclusive(predicate: (T) -> Boolean): List<T> {
-    var shouldContinue = true
-    return takeWhile {
-        val result = shouldContinue
-        shouldContinue = predicate(it)
-        result
-    }
-}
+fun SearchState.turnOffValve(valveIndex:Int) = this and (1 shl (16 + valveIndex)).inv()
 
-operator fun <T> List<T>.times(other:List<T>) = sequence {
-    forEach { left->
-        other.forEach { right -> yield(Pair(left,right)) }
-    }
-}
+fun SearchState.setLocation(location:Int) = ((this shr 8) shl 8) or location
+
+fun SearchState.getLocation() = (this shl 24) ushr 24
+
+fun SearchState.getTime() = ((this shl 16) ushr 24)
+fun SearchState.setTime(time:Int) = (this and (255 shl 8).inv()) or (time shl 8)

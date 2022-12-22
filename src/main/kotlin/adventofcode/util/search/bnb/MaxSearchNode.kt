@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-package adventofcode.util
+package adventofcode.util.search.bnb
 
-fun <T> List<T>.tail() = drop(1)
+interface MaxSearchNode<V : Comparable<V>> {
+    fun isLeaf(): Boolean
 
-fun <T> List<T>.head() = first()
+    fun upperBound(): V
 
-inline fun <T> List<T>.takeWhileInclusive(predicate: (T) -> Boolean): List<T> {
-    var shouldContinue = true
-    return takeWhile {
-        val result = shouldContinue
-        shouldContinue = predicate(it)
-        result
-    }
-}
+    fun value(): V
 
-operator fun <T> List<T>.times(other:List<T>) = sequence {
-    forEach { left->
-        other.forEach { right -> yield(Pair(left,right)) }
-    }
+    fun branches(): List<MaxSearchNode<V>>
 }
