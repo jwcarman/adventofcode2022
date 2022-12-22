@@ -19,7 +19,7 @@ package adventofcode.day16
 import adventofcode.day16.Valve.Companion.parseGraph
 import adventofcode.util.graph.Graph
 
-class Volcano {
+class Volcano private constructor(graph: Graph<Valve, Unit>) {
 
     private val tunnels: Map<Valve, List<Tunnel>>
     private val numberOfFlowValves: Int
@@ -27,7 +27,7 @@ class Volcano {
     private val valves: List<Valve>
     private val indexOf: Map<Valve, Int>
 
-    private constructor(graph: Graph<Valve, Unit>) {
+    init {
         val tmpTunnels = mutableMapOf<Valve, List<Tunnel>>()
         val start = Valve.start()
         val flowValves = graph.flowValves()

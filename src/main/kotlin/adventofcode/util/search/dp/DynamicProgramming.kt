@@ -20,7 +20,7 @@ package adventofcode.util.search.dp
 /**
  * A state model for dynamic programming
  */
-interface DynamicProgrammingState<V : Comparable<V>> {
+interface DynamicProgrammingState<S:DynamicProgrammingState<S,V>,V : Comparable<V>> {
     /**
      * Is this state a terminal state (has no children)?
      */
@@ -29,7 +29,7 @@ interface DynamicProgrammingState<V : Comparable<V>> {
     /**
      * Generate child states for this state.
      */
-    fun children(): List<DynamicProgrammingState<V>>
+    fun children(): List<S>
 
     /**
      * Calculate the value of this state (not including children)
@@ -38,56 +38,56 @@ interface DynamicProgrammingState<V : Comparable<V>> {
 
 }
 
-fun <V : Comparable<V>> maximum(
-    state: DynamicProgrammingState<V>,
-    cache: MutableMap<DynamicProgrammingState<V>, V>,
+fun <S:DynamicProgrammingState<S,V>,V : Comparable<V>> maximum(
+    state: S,
+    cache: MutableMap<S, V>,
     add: (V, V) -> V
 ): V {
     return optimum(state, add, cache) { it.max() }
 }
 
-fun <V : Comparable<V>> maximum(state: DynamicProgrammingState<V>, add: (V, V) -> V): V {
+fun <S:DynamicProgrammingState<S,V>,V : Comparable<V>> maximum(state: S, add: (V, V) -> V): V {
     return optimum(state, add) { it.max() }
 }
 
-fun maximum(state: DynamicProgrammingState<Int>): Int = maximum(state) { l, r -> l + r }
-fun maximum(state: DynamicProgrammingState<Int>, cache: MutableMap<DynamicProgrammingState<Int>, Int>): Int = maximum(state, cache) { l, r -> l + r }
-fun maximum(state: DynamicProgrammingState<Long>): Long = maximum(state) { l, r -> l + r }
-fun maximum(state: DynamicProgrammingState<Long>, cache: MutableMap<DynamicProgrammingState<Long>, Long>): Long = maximum(state, cache) { l, r -> l + r }
-fun maximum(state: DynamicProgrammingState<Double>): Double = maximum(state) { l, r -> l + r }
-fun maximum(state: DynamicProgrammingState<Double>, cache: MutableMap<DynamicProgrammingState<Double>, Double>): Double = maximum(state, cache) { l, r -> l + r }
+fun <S:DynamicProgrammingState<S,Int>> maximum(state: S): Int = maximum(state) { l, r -> l + r }
+fun <S:DynamicProgrammingState<S,Int>> maximum(state: S, cache: MutableMap<S, Int>): Int = maximum(state, cache) { l, r -> l + r }
+fun <S:DynamicProgrammingState<S,Long>> maximum(state: S): Long = maximum(state) { l, r -> l + r }
+fun <S:DynamicProgrammingState<S,Long>> maximum(state: S, cache: MutableMap<S, Long>): Long = maximum(state, cache) { l, r -> l + r }
+fun <S:DynamicProgrammingState<S,Double>> maximum(state: S): Double = maximum(state) { l, r -> l + r }
+fun <S:DynamicProgrammingState<S,Double>> maximum(state: S, cache: MutableMap<S, Double>): Double = maximum(state, cache) { l, r -> l + r }
 
-fun <V : Comparable<V>> minimum(state: DynamicProgrammingState<V>, add: (V, V) -> V): V {
+fun <S:DynamicProgrammingState<S,V>,V : Comparable<V>> minimum(state: S, add: (V, V) -> V): V {
     return optimum(state, add) { it.min() }
 }
 
-fun <V : Comparable<V>> minimum(
-    state: DynamicProgrammingState<V>,
-    cache: MutableMap<DynamicProgrammingState<V>, V>,
+fun <S:DynamicProgrammingState<S,V>,V : Comparable<V>> minimum(
+    state: S,
+    cache: MutableMap<S, V>,
     add: (V, V) -> V
 ): V {
     return optimum(state, add, cache) { it.min() }
 }
 
-fun minimum(state: DynamicProgrammingState<Int>): Int = minimum(state) { l, r -> l + r }
+fun <S:DynamicProgrammingState<S,Int>> minimum(state: S): Int = minimum(state) { l, r -> l + r }
 
-fun minimum(state: DynamicProgrammingState<Long>): Long = minimum(state) { l, r -> l + r }
+fun <S:DynamicProgrammingState<S,Long>> minimum(state: S): Long = minimum(state) { l, r -> l + r }
 
-fun minimum(state: DynamicProgrammingState<Double>): Double = minimum(state) { l, r -> l + r }
+fun <S:DynamicProgrammingState<S,Double>> minimum(state: S): Double = minimum(state) { l, r -> l + r }
 
 
-private fun <V : Comparable<V>> optimum(
-    state: DynamicProgrammingState<V>,
+private fun <S:DynamicProgrammingState<S,V>,V : Comparable<V>> optimum(
+    state: S,
     add: (V, V) -> V,
     optimumValueOf: (List<V>) -> V
 ): V {
     return optimum(state, add, mutableMapOf(), optimumValueOf)
 }
 
-private fun <V : Comparable<V>> optimum(
-    state: DynamicProgrammingState<V>,
+private fun <S:DynamicProgrammingState<S,V>,V : Comparable<V>> optimum(
+    state: S,
     add: (V, V) -> V,
-    cache: MutableMap<DynamicProgrammingState<V>, V>,
+    cache: MutableMap<S, V>,
     optimumValueOf: (List<V>) -> V
 ): V {
     if (state.isTerminal()) {

@@ -52,7 +52,7 @@ class Day16 {
     private fun calculatePart2(input: String): Int {
         val volcano = Volcano.parse(input)
 
-        val cache = mutableMapOf<DynamicProgrammingState<Int>, Int>()
+        val cache = mutableMapOf<SoloSearchState, Int>()
         return volcano.flowValveSubsetPairs().map {
             val first = maximum(SoloSearchState(volcano, 26, it.first), cache)
             val second = maximum(SoloSearchState(volcano, 26, it.second), cache)
@@ -61,7 +61,7 @@ class Day16 {
     }
 
 
-    private class SoloSearchState : DynamicProgrammingState<Int> {
+    private class SoloSearchState : DynamicProgrammingState<SoloSearchState,Int> {
 
         val volcano: Volcano
         val valvesRemaining: Set<Valve>
@@ -92,7 +92,7 @@ class Day16 {
             return timeRemaining <= 0 || valvesRemaining.isEmpty()
         }
 
-        override fun children(): List<DynamicProgrammingState<Int>> {
+        override fun children(): List<SoloSearchState> {
             return volcano.tunnelsFrom(currentValve)
                 .filter { it.to in valvesRemaining }
                 .map { SoloSearchState(this, it) }
