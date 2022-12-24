@@ -21,22 +21,20 @@ import kotlin.math.min
 
 const val THUMBPRINT_SIZE = 50
 
-class Cavern(val maximumLayers: Int = 100) {
+class Cavern(private val maximumLayers: Int = 100) {
     private val layers = mutableListOf<Int>()
     private val thumbprints = mutableMapOf<Int, ThumbprintStats>()
     private var placedRocks = 0
     private var maxDepth = 0
-    private var height = 0L
-    private var cyclePeriod = 0
-    private var cycleDifferential = 0L
-    private var cycleFirstDetected = Int.MAX_VALUE
+    var height = 0L
+        private set
+    var cyclePeriod = 0
+        private set
+    var cycleDifferential = 0L
+        private set
 
-    fun height() = height
-
-    fun cyclePeriod() = cyclePeriod
-    fun cycleDifferential() = cycleDifferential
-
-    fun cycleFirstDetected() = cycleFirstDetected
+    var cycleFirstDetected = Int.MAX_VALUE
+        private set
 
     fun isUnimpeded(rock: Rock, depth: Int): Boolean {
         if (depth <= 0) {

@@ -72,19 +72,19 @@ class Day17 {
 
     fun calculatePart1(input: String): Long {
         val cavern = runSimulation(input, 2022)
-        return cavern.height()
+        return cavern.height
     }
 
 
     fun calculatePart2(input: String): Long {
         val cavern = runSimulation(input, 2000)
         val total = 1000000000000L
-        val headLength = cavern.cycleFirstDetected()
-        val headHeight = runSimulation(input, headLength).height()
-        val tailLength = ((total - headLength) % cavern.cyclePeriod()).toInt()
-        val tailHeight = runSimulation(input, headLength + tailLength).height() - headHeight
-        val fullCycles = (total - headLength) / cavern.cyclePeriod()
-        val fullCyclesHeight = fullCycles * cavern.cycleDifferential()
+        val headLength = cavern.cycleFirstDetected
+        val headHeight = runSimulation(input, headLength).height
+        val tailLength = ((total - headLength) % cavern.cyclePeriod).toInt()
+        val tailHeight = runSimulation(input, headLength + tailLength).height - headHeight
+        val fullCycles = (total - headLength) / cavern.cyclePeriod
+        val fullCyclesHeight = fullCycles * cavern.cycleDifferential
         return headHeight + fullCyclesHeight + tailHeight
     }
 }
