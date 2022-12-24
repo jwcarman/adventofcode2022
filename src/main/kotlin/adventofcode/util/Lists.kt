@@ -34,3 +34,12 @@ operator fun <T> List<T>.times(other:List<T>) = sequence {
         other.forEach { right -> yield(Pair(left,right)) }
     }
 }
+
+class Repeater<T>(private val values:List<T>) {
+    private var ndx = 0
+    fun next(): T {
+        val value = values[ndx]
+        ndx = (ndx + 1) % values.size
+        return value
+    }
+}
