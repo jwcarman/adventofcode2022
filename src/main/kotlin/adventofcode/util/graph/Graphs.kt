@@ -58,22 +58,22 @@ object Graphs {
         return ShortestPaths(start, dist, pred)
     }
 
-    private data class ReachableVertex<V>(val maxSteps:Int, val vertex:V)
-    fun <V> reachable(start: V, maxSteps: Int, neighbors: (V) -> List<V>): Set<V> {
-        val visited = mutableSetOf(ReachableVertex(maxSteps, start))
-        collectReachable(start, visited, maxSteps, neighbors)
-        return visited.map { it.vertex }.toSet()
-    }
+    private data class Reachable<V>(val steps: Int, val vertex: V)
 
-    private fun <V> collectReachable(start: V, reachable: MutableSet<ReachableVertex<V>>, maxSteps: Int, neighbors: (V) -> List<V>) {
-        if (maxSteps == 0) {
-            return
+    fun <V> reachable(start: V, maxSteps: Int = Int.MAX_VALUE, neighbors: (V) -> List<V>): Set<V> {
+        val visited = mutableSetOf<V>()
+        val queue = mutableListOf(Reachable(0, start))
+        while (queue.isNotEmpty()) {
+            val reachable = queue.removeLast()
+            visited += reachable.vertex
+            if (reachable.steps < maxSteps) {
+                val ns = neighbors(reachable.vertex)
+                    .filter { it !in visited }
+                    .map { Reachable(reachable.steps + 1, it) }
+                queue.addAll(ns)
+            }
         }
-        val n = neighbors(start).filter { ReachableVertex(maxSteps,it) !in reachable }
-        n.forEach { neighbor ->
-            reachable.add(ReachableVertex(maxSteps, neighbor))
-            collectReachable(neighbor, reachable, maxSteps - 1, neighbors)
-        }
+        return visited
     }
 
     fun <V> dfs(start: V, end: V, neighbors: (V) -> List<V>): List<V> {

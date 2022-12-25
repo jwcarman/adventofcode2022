@@ -18,30 +18,17 @@ package adventofcode.util.geom
 
 import kotlin.math.abs
 
-data class Point2D(val x: Int, val y: Int) : Comparable<Point2D> {
-
-    private val comparator = Comparator.comparing(Point2D::x).thenComparing(Point2D::y)
-    override fun compareTo(other: Point2D): Int {
-        return comparator.compare(this, other)
-    }
-
+data class Point3D(val x: Int, val y: Int, val z: Int) {
     fun neighbors() = listOf(
-        Point2D(x - 1, y),
-        Point2D(x + 1, y),
-        Point2D(x, y - 1),
-        Point2D(x, y + 1)
+        Point3D(x - 1, y, z),
+        Point3D(x + 1, y, z),
+        Point3D(x, y - 1, z),
+        Point3D(x, y + 1, z),
+        Point3D(x, y, z - 1),
+        Point3D(x, y, z + 1)
     )
 
 
-    fun manhattanDistance(other: Point2D) = abs(x - other.x) + abs(y - other.y)
-
-    override fun toString(): String {
-        return "($x,$y)"
-    }
-
-    fun translate(dx: Int, dy: Int) = Point2D(x + dx, y + dy)
-
-    companion object {
-        fun origin() = Point2D(0, 0)
-    }
+    fun isAdjacent(other:Point3D) = manhattanDistance(other) == 1
+    fun manhattanDistance(other: Point3D) = abs(x - other.x) + abs(y - other.y) + abs(z - other.z)
 }
