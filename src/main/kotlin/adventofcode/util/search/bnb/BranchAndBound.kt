@@ -16,8 +16,13 @@
 
 package adventofcode.util.search.bnb
 
+import java.util.concurrent.TimeUnit
+import kotlin.time.ExperimentalTime
+
 object BranchAndBound {
+    @OptIn(ExperimentalTime::class)
     fun <V : Comparable<V>> maximumSearch(root: MaxSearchNode<V>, initialLowerBound: V): MaxSearchNode<V> {
+        val before = System.nanoTime()
         val queue = mutableListOf<MaxSearchNode<V>>()
         queue.add(root)
         var lowerBound = initialLowerBound
@@ -28,20 +33,24 @@ object BranchAndBound {
             if (candidate.upperBound() > lowerBound) {
                 if (candidate.isLeaf()) {
                     val nodeValue = candidate.value()
-                    if (nodeValue > lowerBound) {
+                    if (nodeValue > lowerBound || maximumNode == null) {
                         lowerBound = nodeValue
                         maximumNode = candidate
                     }
                     leavesVisited++
                 } else {
-                    queue.addAll(candidate
+                    val allBranches = candidate
                         .branches()
+                    val feasibleBranches = allBranches
                         .filter { it.upperBound() > lowerBound }
-                        .sortedBy { it.upperBound() })
+                        .sortedBy { it.upperBound() }
+                    queue.addAll(feasibleBranches)
                 }
             }
         }
-        println("Found maximum after visiting $leavesVisited leaves.")
+        val after = System.nanoTime()
+        val elapsedMs = TimeUnit.NANOSECONDS.toMillis(after - before)
+        println("Found maximum after visiting $leavesVisited leaves with a lower bound $lowerBound in $elapsedMs milliseconds.")
         return maximumNode!!
     }
 }
