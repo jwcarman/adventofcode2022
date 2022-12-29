@@ -18,7 +18,7 @@ package adventofcode.day21
 
 import adventofcode.util.isNumeric
 
-class MonkeyMath(val expressions: Map<String, String>) {
+class MonkeyMath(private val expressions: Map<String, String>) {
 
     companion object {
         private val mathRegex = Regex("[+\\-*/]")
