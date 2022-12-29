@@ -53,10 +53,6 @@ class Volcano private constructor(graph: Graph<Valve, Unit>) {
         }
     }
 
-    fun indexOf(valve: Valve): Int = indexOf[valve]!!
-
-    fun valveAtIndex(index: Int): Valve = valves[index]!!
-
     fun valves() = tunnels.keys.sortedBy { it.flowRate }
 
     fun tunnelsFrom(from: Valve) = tunnels.getOrDefault(from, listOf())
