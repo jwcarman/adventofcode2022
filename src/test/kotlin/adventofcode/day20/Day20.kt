@@ -19,6 +19,7 @@ package adventofcode.day20
 import adventofcode.util.readAsString
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+
 class Day20 {
     @Test
     fun example1() {
