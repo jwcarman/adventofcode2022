@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package adventofcode.util
+package adventofcode.util.table
 
 
 class Table<T>(private val values: List<List<T>>) {

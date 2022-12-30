@@ -16,10 +16,10 @@
 
 package adventofcode.day12
 
-import adventofcode.util.Table
 import adventofcode.util.graph.Graph
 import adventofcode.util.graph.SparseGraph
 import adventofcode.util.readAsString
+import adventofcode.util.table.Table
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
