@@ -16,24 +16,67 @@
 
 package adventofcode.util.grid
 
+import adventofcode.util.geom.Point2D
+
 fun <T : Any> Grid<T>.transpose(): Grid<T> = TransposedGrid(this)
-private class TransposedGrid<T : Any>(val original: Grid<T>) : FlippedGrid<T>(original) {
-    override fun get(x: Int, y: Int) = original[y, x]
+private class TransposedGrid<T : Any>(original: Grid<T>) : FlippedGrid<T>(original) {
+    override fun getImpl(x: Int, y: Int) = original[y, x]
     override fun rowAt(y: Int) = original.columnAt(y)
     override fun columnAt(x: Int) = original.rowAt(x)
 }
 
 fun <T : Any> Grid<T>.rotateRight(): Grid<T> = RotateRightGrid(this)
-private class RotateRightGrid<T : Any>(private val original: Grid<T>) : FlippedGrid<T>(original) {
-    override fun get(x: Int, y: Int) = original[y, width() - 1 - x]
+private class RotateRightGrid<T : Any>(original: Grid<T>) : FlippedGrid<T>(original) {
+    override fun getImpl(x: Int, y: Int) = original[y, width() - 1 - x]
 }
 
 fun <T : Any> Grid<T>.rotateLeft(): Grid<T> = RotateLeftGrid(this)
-private class RotateLeftGrid<T : Any>(private val original: Grid<T>) : FlippedGrid<T>(original) {
-    override fun get(x: Int, y: Int) = original[height() - 1 - y, x]
+private class RotateLeftGrid<T : Any>(original: Grid<T>) : FlippedGrid<T>(original) {
+    override fun getImpl(x: Int, y: Int) = original[height() - 1 - y, x]
 }
 
-private abstract class FlippedGrid<T : Any>(private val original: Grid<T>) : Grid<T> {
+private abstract class DelegatedGrid<T : Any>(protected val original: Grid<T>) : AbstractGrid<T>()
+private abstract class FlippedGrid<T : Any>(original: Grid<T>) : DelegatedGrid<T>(original) {
     override fun width() = original.height()
     override fun height() = original.width()
+}
+
+fun <T : Any> Grid<T>.subGrid(origin: Point2D, width: Int, height: Int): Grid<T> =
+    subGrid(origin.x, origin.y, width, height)
+
+fun <T : Any> Grid<T>.subGrid(xOffset: Int, yOffset: Int, width: Int, height: Int): Grid<T> =
+    SubGrid(this, xOffset, yOffset, width, height)
+
+private class SubGrid<T : Any>(
+    original: Grid<T>,
+    private val xOffset: Int,
+    private val yOffset: Int,
+    private val width: Int,
+    private val height: Int
+) :
+    DelegatedGrid<T>(original) {
+
+    init {
+        verifyPoint(original, xOffset, yOffset)
+        verifyPoint(original, xOffset + width - 1, yOffset + height - 1)
+    }
+
+    override fun getImpl(x: Int, y: Int): T {
+        return original[x + xOffset, y + yOffset]
+    }
+
+    override fun width() = width
+
+    override fun height() = height
+}
+
+fun <T : Any> verifyPoint(grid: Grid<T>, x: Int, y: Int) {
+    val xBounds = grid.xRange()
+    if (x !in xBounds) {
+        throw IllegalArgumentException("Values for x must be in $xBounds.")
+    }
+    val yBounds = grid.yRange()
+    if (y !in yBounds) {
+        throw IllegalArgumentException("Values for y must be in $yBounds.")
+    }
 }

@@ -18,14 +18,7 @@ package adventofcode.util.grid
 
 abstract class AbstractGrid<T : Any> : Grid<T> {
     final override fun get(x: Int, y: Int): T {
-        val xBounds = xRange()
-        if (x !in xBounds) {
-            throw IllegalArgumentException("Values for x must be in $xBounds.")
-        }
-        val yBounds = yRange()
-        if (y !in yBounds) {
-            throw IllegalArgumentException("Values for y must be in $yBounds.")
-        }
+        verifyPoint(this, x, y)
         return getImpl(x, y)
     }
 

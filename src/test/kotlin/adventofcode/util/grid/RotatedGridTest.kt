@@ -50,12 +50,8 @@ class RotatedGridTest {
 
     @Test
     fun rotateLeftShouldReturnCorrectValues() {
-
-
-
         val grid = TextGrid(listOf("123", "456"))
         val rotated = grid.rotateLeft()
-        println(grid)
         assertThat(rotated[0,0]).isEqualTo('3')
         assertThat(rotated[1,0]).isEqualTo('6')
         assertThat(rotated[0,1]).isEqualTo('2')

@@ -59,7 +59,6 @@ class Day22 {
 
         println(occupied)
 
-
         return 0
     }
 
