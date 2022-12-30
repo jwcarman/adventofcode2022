@@ -34,7 +34,7 @@ class ArrayGridTest {
 
     @Test
     fun rowAtShouldReturnCorrectValues() {
-        val grid = ArrayGrid(arrayOf(arrayOf(1, 2, 3), arrayOf(4, 5, 6)))
+        val grid = arrayOf(arrayOf(1, 2, 3), arrayOf(4, 5, 6)).toGrid()
         assertThat(grid.rowAt(0).toList()).isEqualTo(listOf(1, 2, 3))
         assertThat(grid.rowAt(1).toList()).isEqualTo(listOf(4, 5, 6))
     }

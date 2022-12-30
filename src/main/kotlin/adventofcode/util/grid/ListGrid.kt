@@ -16,6 +16,8 @@
 
 package adventofcode.util.grid
 
+fun <T: Any> List<T>.toGrid(width:Int) = ListGrid(width, this)
+
 class ListGrid<T : Any>(private val width: Int, values: List<T>) : AbstractGrid<T>() {
     private val values: List<T>
     private val height: Int

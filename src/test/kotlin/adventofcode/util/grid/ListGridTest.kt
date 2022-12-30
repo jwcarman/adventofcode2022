@@ -24,7 +24,7 @@ import kotlin.test.assertFailsWith
 class ListGridTest {
     @Test
     fun shouldConstructWithProperDimensions() {
-        val grid = ListGrid(2, listOf(1, 2, 3, 4, 5, 6))
+        val grid = listOf(1, 2, 3, 4, 5, 6).toGrid(2)
         assertThat(grid.width()).isEqualTo(2)
         assertThat(grid.height()).isEqualTo(3)
     }

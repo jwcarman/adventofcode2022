@@ -24,7 +24,7 @@ import kotlin.test.assertFailsWith
 class TextGridTest {
     @Test
     fun toStringShouldReturnLinesSeparatedByNewline() {
-        val grid = TextGrid(listOf("12", "34"))
+        val grid = listOf("12", "34").toGrid()
         assertThat(grid.toString()).isEqualTo("12\n34")
     }
 

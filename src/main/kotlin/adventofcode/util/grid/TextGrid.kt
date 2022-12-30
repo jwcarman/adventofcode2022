@@ -16,6 +16,7 @@
 
 package adventofcode.util.grid
 
+fun List<String>.toGrid(padChar: Char = ' ') = TextGrid(this, padChar)
 class TextGrid(lines: List<String>, padChar: Char = ' ') : AbstractGrid<Char>() {
 
     private val lines: List<String>

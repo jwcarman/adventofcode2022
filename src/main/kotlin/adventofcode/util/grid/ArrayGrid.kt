@@ -16,6 +16,8 @@
 
 package adventofcode.util.grid
 
+fun <T: Any> Array<Array<T>>.toGrid() = ArrayGrid(this)
+
 class ArrayGrid<T : Any>(private val values: Array<Array<T>>) : AbstractGrid<T>() {
 
     private val width: Int = values.maxOf { it.size }
