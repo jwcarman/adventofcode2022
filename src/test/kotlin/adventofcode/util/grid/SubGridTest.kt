@@ -77,6 +77,7 @@ class SubGridTest {
         assertFailsWith<IllegalArgumentException> { original.subGrid(0, -1, 1, 1) }
         assertFailsWith<IllegalArgumentException> { original.subGrid(3, 0, 1, 1) }
         assertFailsWith<IllegalArgumentException> { original.subGrid(0, 3, 1, 1) }
+
         assertFailsWith<IllegalArgumentException> { original.subGrid(0, 0, 4, 1) }
         assertFailsWith<IllegalArgumentException> { original.subGrid(0, 0, 1, 4) }
     }
