@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 James Carman
+ * Copyright (c) 2023 James Carman
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package adventofcode.util.geom
 
+import adventofcode.util.geom.plane.Point2D
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -75,5 +76,12 @@ class Point2DTest {
             Point2D(-1, 0)
 
         )
+    }
+
+    @Test
+    fun comparisonsCheck() {
+        assertThat(Point2D(0,0)).isLessThan(Point2D(1,0))
+        assertThat(Point2D(0,0)).isLessThan(Point2D(0,1))
+        assertThat(Point2D(0,0).compareTo(Point2D(0,0))).isZero
     }
 }

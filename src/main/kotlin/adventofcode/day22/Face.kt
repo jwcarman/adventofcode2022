@@ -14,21 +14,8 @@
  * limitations under the License.
  */
 
-package adventofcode.day15
+package adventofcode.day22
 
-import adventofcode.util.geom.plane.Point2D
-import kotlin.math.abs
+import adventofcode.util.grid.GridView
 
-data class Sensor(val sensorPoint: Point2D, val beaconPoint: Point2D) {
-
-    private val sensorRange = sensorPoint.manhattanDistance(beaconPoint)
-    fun horizontalScanRange(y: Int): IntRange {
-        val dist = abs(sensorPoint.y - y)
-        return if (dist > sensorRange) {
-            IntRange.EMPTY
-        } else {
-            val diff = sensorRange - dist
-            sensorPoint.x - diff..sensorPoint.x + diff
-        }
-    }
-}
+data class Face(val grid: GridView<Char>, val type: FaceType)

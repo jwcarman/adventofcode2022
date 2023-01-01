@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 James Carman
+ * Copyright (c) 2023 James Carman
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package adventofcode.day09
 
-import adventofcode.util.geom.Point2D
+import adventofcode.util.geom.plane.Point2D
 import adventofcode.util.head
 import adventofcode.util.readAsLines
 import adventofcode.util.tail

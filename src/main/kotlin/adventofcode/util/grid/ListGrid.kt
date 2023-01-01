@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 James Carman
+ * Copyright (c) 2023 James Carman
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package adventofcode.util.grid
 
-fun <T: Any> List<T>.toGrid(width:Int) = ListGrid(width, this)
+fun <T : Any> List<T>.toGrid(width: Int) = ListGrid(width, this)
 
 class ListGrid<T : Any>(private val width: Int, values: List<T>) : AbstractGrid<T>() {
     private val values: List<T>
@@ -29,6 +29,8 @@ class ListGrid<T : Any>(private val width: Int, values: List<T>) : AbstractGrid<
         this.values = values
         this.height = values.size / width
     }
+
+    constructor(width: Int, vararg values: T) : this(width, values.toList())
 
     override fun getImpl(x: Int, y: Int) = values[gridIndex(x, y)]
     override fun width() = width

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 James Carman
+ * Copyright (c) 2023 James Carman
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package adventofcode.day18
 
-import adventofcode.util.geom.Point3D
+import adventofcode.util.geom.solid.Point3D
 import adventofcode.util.graph.Graphs
 import adventofcode.util.readAsString
 import org.assertj.core.api.Assertions.assertThat

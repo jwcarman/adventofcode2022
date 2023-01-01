@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package adventofcode.day15
+package adventofcode.day22
 
+import adventofcode.day22.EdgeType.*
 import adventofcode.util.geom.plane.Point2D
-import kotlin.math.abs
 
-data class Sensor(val sensorPoint: Point2D, val beaconPoint: Point2D) {
-
-    private val sensorRange = sensorPoint.manhattanDistance(beaconPoint)
-    fun horizontalScanRange(y: Int): IntRange {
-        val dist = abs(sensorPoint.y - y)
-        return if (dist > sensorRange) {
-            IntRange.EMPTY
-        } else {
-            val diff = sensorRange - dist
-            sensorPoint.x - diff..sensorPoint.x + diff
+class FlatWrappingRule : WrappingRule {
+    override fun wrap(pose: Pose): Pose {
+        val position = when(pose.facing) {
+            UP -> Point2D(pose.position.x, pose.face.grid.height() - 1)
+            DOWN -> Point2D(pose.position.x, 0)
+            LEFT -> Point2D(pose.face.grid.width() - 1, pose.position.y)
+            RIGHT -> Point2D(0, pose.position.y)
         }
+        return Pose(pose.face,position,pose.facing)
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 James Carman
+ * Copyright (c) 2023 James Carman
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,41 +16,54 @@
 
 package adventofcode.day22
 
-enum class Facing {
+import adventofcode.util.geom.plane.Point2D
+
+operator fun Point2D.plus(direction: EdgeType) = this.translate(direction.dx(), direction.dy())
+
+enum class EdgeType {
     UP {
-        override fun value() = 3L
+        override fun value() = 3
         override fun dx() = 0
         override fun dy() = -1
         override fun turnRight() = RIGHT
         override fun turnLeft() = LEFT
+        override fun opposite() = DOWN
     },
     DOWN {
-        override fun value() = 1L
+        override fun value() = 1
         override fun dx() = 0
         override fun dy() = 1
         override fun turnRight() = LEFT
         override fun turnLeft() = RIGHT
+        override fun opposite() = UP
     },
     LEFT {
-        override fun value() = 2L
+        override fun value() = 2
         override fun dx() = -1
         override fun dy() = 0
         override fun turnRight() = UP
         override fun turnLeft() = DOWN
+        override fun opposite() = RIGHT
     },
     RIGHT {
-        override fun value() = 0L
+        override fun value() = 0
         override fun dx() = 1
         override fun dy() = 0
         override fun turnRight() = DOWN
         override fun turnLeft() = UP
+        override fun opposite() = LEFT
     };
 
-    abstract fun value(): Long
+    abstract fun value(): Int
 
     abstract fun dx(): Int
     abstract fun dy(): Int
 
-    abstract fun turnRight(): Facing
-    abstract fun turnLeft(): Facing
+    abstract fun turnRight(): EdgeType
+    abstract fun turnLeft(): EdgeType
+
+    abstract fun opposite(): EdgeType
+
+    operator fun inc() = turnRight()
+    operator fun dec() = turnLeft()
 }

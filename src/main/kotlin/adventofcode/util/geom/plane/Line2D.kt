@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 James Carman
+ * Copyright (c) 2023 James Carman
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package adventofcode.util.geom
+package adventofcode.util.geom.plane
 
-import kotlin.math.abs
+import kotlin.math.sign
 
-data class Point3D(val x: Int, val y: Int, val z: Int) {
-    fun neighbors() = listOf(
-        Point3D(x - 1, y, z),
-        Point3D(x + 1, y, z),
-        Point3D(x, y - 1, z),
-        Point3D(x, y + 1, z),
-        Point3D(x, y, z - 1),
-        Point3D(x, y, z + 1)
-    )
-
-
-    fun isAdjacent(other:Point3D) = manhattanDistance(other) == 1
-    fun manhattanDistance(other: Point3D) = abs(x - other.x) + abs(y - other.y) + abs(z - other.z)
+data class Line2D(val begin: Point2D, val end: Point2D) {
+    fun points() = sequence {
+        var p = begin
+        var dx = (end.x - begin.x).sign
+        var dy = (end.y - begin.y).sign
+        while (p != end) {
+            yield(p)
+            p = p.translate(dx, dy)
+        }
+        yield(p)
+    }
 }

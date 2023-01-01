@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 James Carman
+ * Copyright (c) 2023 James Carman
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package adventofcode.util.grid
 
-import adventofcode.util.geom.Point2D
+import adventofcode.util.geom.plane.Point2D
 
 interface Grid<T : Any> {
     operator fun get(coordinate: Point2D) = get(coordinate.x, coordinate.y)
@@ -39,6 +39,8 @@ interface Grid<T : Any> {
 
     operator fun get(x: Int, y: Int): T
 
+    fun size() = width() * height()
+
     fun width(): Int
 
     fun height(): Int
@@ -58,4 +60,9 @@ interface Grid<T : Any> {
     fun xRange() = 0 until width()
 
     fun yRange() = 0 until height()
+
+    operator fun contains(point: Point2D) = point.x in xRange() && point.y in yRange()
+
+    fun coordinatesWithValues() = coordinates().map { Pair(it, get(it)) }
+
 }

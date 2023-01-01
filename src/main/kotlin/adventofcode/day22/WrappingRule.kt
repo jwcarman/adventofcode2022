@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 James Carman
+ * Copyright (c) 2023 James Carman
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-package adventofcode.util.geom
+package adventofcode.day22
 
-import kotlin.math.sign
-
-data class Line2D(val begin: Point2D, val end: Point2D) {
-    fun points() = sequence {
-        var p = begin
-        var dx = (end.x - begin.x).sign
-        var dy = (end.y - begin.y).sign
-        while (p != end) {
-            yield(p)
-            p = p.translate(dx, dy)
-        }
-        yield(p)
-    }
+interface WrappingRule {
+    fun wrap(pose: Pose): Pose
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 James Carman
+ * Copyright (c) 2023 James Carman
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,48 @@
 
 package adventofcode.day22
 
-import adventofcode.util.geom.Point2D
-import adventofcode.util.grid.Grid
+import adventofcode.util.geom.plane.Point2D
 
-class Pose(val position: Point2D, val facing: Facing) {
-    fun password(): Long {
-        return 1000L * (position.y + 1) + 4 * (position.x + 1) + facing.value()
+private const val SOLID_WALL = '#'
+
+private const val OPEN_SPACE = ' '
+
+class Pose(val face: Face, val position: Point2D, val facing: EdgeType) {
+
+    fun calculatePassword(): Int {
+        val (x, y) = face.grid.underlyingPoint(position.x, position.y)
+        return 1000 * (y + 1) + 4 * (x + 1) + facing.value()
     }
 
-    fun walk(grid: Grid<Char>) = sequence {
-        var curr = position
-        while (true) {
-            yield(curr)
-            curr = Point2D((curr.x + facing.dx()).mod(grid.width()), (curr.y + facing.dy()).mod(grid.height()))
+    fun followInstruction(instruction: String, rule: WrappingRule): Pose {
+        return when (instruction) {
+            "R" -> turnRight()
+            "L" -> turnLeft()
+            else -> goForward(instruction.toInt(), rule)
         }
     }
+
+    private fun next(rule: WrappingRule): Pose {
+        val next = Pose(face, position + facing, facing)
+        if (next.position !in face.grid) {
+            return rule.wrap(this)
+        }
+        return next
+    }
+
+    private fun goForward(nTiles: Int, rule: WrappingRule): Pose {
+        val steps = generateSequence(this) { p -> p.next(rule) }
+        return steps
+            .filter { it.value() != OPEN_SPACE }
+            .take(nTiles + 1)
+            .takeWhile { it.value() != SOLID_WALL }
+            .last()
+
+    }
+
+    private fun turnRight() = Pose(face, position, facing.turnRight())
+    private fun turnLeft() = Pose(face, position, facing.turnLeft())
+    private fun value() = face.grid[position]
 
     override fun toString(): String {
         return "$position - ${facing.name}"

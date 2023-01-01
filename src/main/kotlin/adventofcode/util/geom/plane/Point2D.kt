@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 James Carman
+ * Copyright (c) 2023 James Carman
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package adventofcode.util.geom
+package adventofcode.util.geom.plane
 
 import kotlin.math.abs
 
 data class Point2D(val x: Int, val y: Int) : Comparable<Point2D> {
 
-    private val comparator = Comparator.comparing(Point2D::x).thenComparing(Point2D::y)
-    override fun compareTo(other: Point2D): Int {
-        return comparator.compare(this, other)
-    }
+    override fun compareTo(other: Point2D) = listOf(y - other.y, x - other.x).firstOrNull { it != 0 } ?: 0
 
     fun neighbors() = listOf(
         Point2D(x - 1, y),
@@ -34,6 +31,8 @@ data class Point2D(val x: Int, val y: Int) : Comparable<Point2D> {
 
 
     fun manhattanDistance(other: Point2D) = abs(x - other.x) + abs(y - other.y)
+
+    fun isAdjacent(other: Point2D) = manhattanDistance(other) == 1
 
     override fun toString(): String {
         return "($x,$y)"
