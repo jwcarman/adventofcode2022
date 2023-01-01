@@ -17,6 +17,7 @@
 package adventofcode.day22
 
 import adventofcode.day22.EdgeType.RIGHT
+import adventofcode.util.grid.Grid
 import adventofcode.util.grid.TextGrid
 import adventofcode.util.grid.nullView
 import adventofcode.util.readAsString
@@ -44,13 +45,15 @@ class Day22 {
         assertThat(calculatePart2(readAsString("day22.txt"), 50)).isEqualTo(110400)
     }
 
+    private fun Grid<Char>.startPosition() = coordinates().first { this[it] == '.' }
+
     fun calculatePart1(input: String): Int {
         val splits = input.split("\n\n")
         val grid = TextGrid(splits[0].lines())
         val instructions = parseInstructions(splits[1])
-        val start = grid.coordinates().first { grid[it] == '.' }
         val rule = FlatWrappingRule()
-        val finish = followInstructions(Pose(Face(grid.nullView(), FaceType.FRONT), start, RIGHT), instructions, rule)
+        val start = Pose(Face(grid.nullView(), FaceType.FRONT), grid.startPosition(), RIGHT)
+        val finish = followInstructions(start, instructions, rule)
         return finish.calculatePassword()
 
     }
@@ -59,11 +62,10 @@ class Day22 {
         val splits = input.split("\n\n")
         val map = TextGrid(splits[0].lines())
         val instructions = parseInstructions(splits[1])
-
         val rule = CubeWrappingRule(map, sideLength)
         val frontFace = rule[FaceType.FRONT]
-        val (startPosition, _) = frontFace.grid.coordinatesWithValues().first { it.second == '.' }
-        val finish = followInstructions(Pose(frontFace, startPosition, RIGHT), instructions, rule)
+        val start = Pose(frontFace, frontFace.grid.startPosition(), RIGHT)
+        val finish = followInstructions(start, instructions, rule)
         return finish.calculatePassword()
     }
 
