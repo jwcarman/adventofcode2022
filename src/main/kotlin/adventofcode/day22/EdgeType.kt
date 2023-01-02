@@ -16,10 +16,6 @@
 
 package adventofcode.day22
 
-import adventofcode.util.geom.plane.Point2D
-
-operator fun Point2D.plus(direction: EdgeType) = this.translate(direction.dx(), direction.dy())
-
 enum class EdgeType {
     UP {
         override fun value() = 3
@@ -63,7 +59,4 @@ enum class EdgeType {
     abstract fun turnLeft(): EdgeType
 
     abstract fun opposite(): EdgeType
-
-    operator fun inc() = turnRight()
-    operator fun dec() = turnLeft()
 }

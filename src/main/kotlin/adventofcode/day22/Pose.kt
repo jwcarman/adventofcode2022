@@ -29,6 +29,8 @@ class Pose(val face: Face, val position: Point2D, val facing: EdgeType) {
         return 1000 * (y + 1) + 4 * (x + 1) + facing.value()
     }
 
+    private fun isOutOfBounds() = position !in face.grid
+
     fun followInstruction(instruction: String, rule: WrappingRule): Pose {
         return when (instruction) {
             "R" -> turnRight()
@@ -38,8 +40,8 @@ class Pose(val face: Face, val position: Point2D, val facing: EdgeType) {
     }
 
     private fun next(rule: WrappingRule): Pose {
-        val next = Pose(face, position + facing, facing)
-        if (next.position !in face.grid) {
+        val next = Pose(face, position.translate(facing.dx(), facing.dy()), facing)
+        if (next.isOutOfBounds()) {
             return rule.wrap(this)
         }
         return next
