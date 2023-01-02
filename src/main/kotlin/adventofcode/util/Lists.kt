@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 James Carman
+ * Copyright (c) 2023 James Carman
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,14 @@ inline fun <T> List<T>.takeWhileInclusive(predicate: (T) -> Boolean): List<T> {
 operator fun <T> List<T>.times(other:List<T>) = sequence {
     forEach { left->
         other.forEach { right -> yield(Pair(left,right)) }
+    }
+}
+
+fun <T> List<T>.repeat() = sequence {
+    var index = 0
+    while(true) {
+        yield(get(index))
+        index = (index + 1) % size
     }
 }
 

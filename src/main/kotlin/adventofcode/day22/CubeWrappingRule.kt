@@ -27,7 +27,7 @@ class CubeWrappingRule(map: Grid<Char>, sideLength: Int) : WrappingRule {
     private val faces = mutableMapOf<FaceType, Face>()
     private val destinations = mutableMapOf<Pair<FaceType, EdgeType>, FaceType>()
     private val borderTypes = mutableMapOf<Pair<FaceType, FaceType>, EdgeType>()
-
+    private val max = sideLength - 1
     init {
         val multiGrid = createMultiGrid(map, sideLength)
         val (frontFaceLoc, frontFaceGrid) = multiGrid.coordinatesWithValues().first { it.second.isNotEmpty() }
@@ -36,11 +36,11 @@ class CubeWrappingRule(map: Grid<Char>, sideLength: Int) : WrappingRule {
     }
 
     override fun wrap(src: Pose): Pose {
-        val destFaceType = destinations[Pair(src.face.type, src.facing)]!!
-        val destBorderType = borderTypes[Pair(destFaceType, src.face.type)]!!
-        val dest = faces[destFaceType]!!
-        val position = translatePoint(src.facing, destBorderType, dest, src.position)
-        return Pose(dest, position, destBorderType.opposite())
+        val destFace = destinations[Pair(src.face.type, src.facing)]!!
+        val destEdge = borderTypes[Pair(destFace, src.face.type)]!!
+        val dest = faces[destFace]!!
+        val position = translatePoint(src.facing, destEdge, src.position)
+        return Pose(dest, position, destEdge.opposite())
     }
 
     private fun addFace(face: Face) {
@@ -54,38 +54,40 @@ class CubeWrappingRule(map: Grid<Char>, sideLength: Int) : WrappingRule {
         borderTypes[Pair(srcFaceType, destFaceType)] = borderType
     }
 
-    private fun translatePoint(srcType: EdgeType, destType: EdgeType, dest: Face, srcPoint: Point2D): Point2D {
-
-        return when (srcType) {
-            UP -> when (destType) {
-                UP -> Point2D(dest.grid.width() - 1 - srcPoint.x, 0)
-                DOWN -> Point2D(srcPoint.x, dest.grid.height() - 1)
-                LEFT -> Point2D(0, srcPoint.x)
-                RIGHT -> Point2D(dest.grid.width() - 1, dest.grid.height() - 1 - srcPoint.x)
+    private fun translatePoint(srcEdge: EdgeType, destEdge: EdgeType, p: Point2D): Point2D {
+        return when (srcEdge) {
+            UP -> when (destEdge) {
+                UP -> Point2D(invert(p.x), 0)
+                DOWN -> Point2D(p.x, max)
+                LEFT -> Point2D(0, p.x)
+                RIGHT -> Point2D(max, invert(p.x))
             }
 
-            DOWN -> when (destType) {
-                UP -> Point2D(srcPoint.x, 0)
-                DOWN -> Point2D(dest.grid.width() - 1 - srcPoint.x, dest.grid.height() - 1)
-                LEFT -> Point2D(0, dest.grid.height() - 1 - srcPoint.x)
-                RIGHT -> Point2D(dest.grid.width() - 1, srcPoint.x)
+            DOWN -> when (destEdge) {
+                UP -> Point2D(p.x, 0)
+                DOWN -> Point2D(invert(p.x), max)
+                LEFT -> Point2D(0, invert(p.x))
+                RIGHT -> Point2D(max, p.x)
             }
 
-            LEFT -> when (destType) {
-                UP -> Point2D(srcPoint.y, 0)
-                DOWN -> Point2D(dest.grid.width() - 1 - srcPoint.y, dest.grid.height() - 1)
-                LEFT -> Point2D(0, dest.grid.height() - 1 - srcPoint.y)
-                RIGHT -> Point2D(dest.grid.width() - 1, srcPoint.y)
+            LEFT -> when (destEdge) {
+                UP -> Point2D(p.y, 0)
+                DOWN -> Point2D(invert(p.y), max)
+                LEFT -> Point2D(0, invert(p.y))
+                RIGHT -> Point2D(max, p.y)
             }
 
-            RIGHT -> when (destType) {
-                UP -> Point2D(dest.grid.width() - 1 - srcPoint.y, 0)
-                DOWN -> Point2D(srcPoint.y, dest.grid.height() - 1)
-                LEFT -> Point2D(0, srcPoint.y)
-                RIGHT -> Point2D(dest.grid.width() - 1, dest.grid.height() - 1 - srcPoint.y)
+            RIGHT -> when (destEdge) {
+                UP -> Point2D(invert(p.y), 0)
+                DOWN -> Point2D(p.y, max)
+                LEFT -> Point2D(0, p.y)
+                RIGHT -> Point2D(max, invert(p.y))
             }
         }
     }
+
+    private fun invert(coord:Int): Int = max - coord
+
 
     private fun Grid<Char>.isNotEmpty() = get(0, 0) != ' '
 
