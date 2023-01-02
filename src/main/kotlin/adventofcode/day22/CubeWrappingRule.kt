@@ -28,6 +28,7 @@ class CubeWrappingRule(map: Grid<Char>, sideLength: Int) : WrappingRule {
     private val destFaceTypes = mutableMapOf<Pair<FaceType, EdgeType>, FaceType>()
     private val srcEdgeTypes = mutableMapOf<Pair<FaceType, FaceType>, EdgeType>()
     private val max = sideLength - 1
+
     init {
         val multiGrid = createMultiGrid(map, sideLength)
         val (frontFaceLoc, frontFaceGrid) = multiGrid.coordinatesWithValues().first { it.second.isNotEmpty() }
@@ -86,12 +87,15 @@ class CubeWrappingRule(map: Grid<Char>, sideLength: Int) : WrappingRule {
         }
     }
 
-    private fun invert(coord:Int): Int = max - coord
+    private fun invert(coord: Int): Int = max - coord
 
 
     private fun Grid<Char>.isNotEmpty() = get(0, 0) != ' '
 
-    private fun Grid<GridView<Char>>.withNeighboringGrid(neighborCoordinate: Point2D, consumer: (GridView<Char>) -> Unit) {
+    private fun Grid<GridView<Char>>.withNeighboringGrid(
+        neighborCoordinate: Point2D,
+        consumer: (GridView<Char>) -> Unit
+    ) {
         if (contains(neighborCoordinate)) {
             val neighbor = get(neighborCoordinate)
             if (neighbor.isNotEmpty()) {
@@ -113,14 +117,14 @@ class CubeWrappingRule(map: Grid<Char>, sideLength: Int) : WrappingRule {
         var ndx = neighborFaceTypes.indexOf(anchorFaceType)
 
         repeat(4) {
-            val neighboringFaceLocation = location.translate(srcEdgeType.dx(), srcEdgeType.dy())
-            addFaceTransition(srcFace.type, srcEdgeType, neighborFaceTypes[ndx])
+            val destFaceType = neighborFaceTypes[ndx]
+            addFaceTransition(srcFace.type, srcEdgeType, destFaceType)
 
-            multiGrid.withNeighboringGrid(neighboringFaceLocation) { grid ->
-                val destFaceType = neighborFaceTypes[ndx]
-                if (destFaceType !in faces) {
-                    val destFace = Face(grid, neighborFaceTypes[ndx])
-                    collectFaces(multiGrid, neighboringFaceLocation, destFace, srcFace.type, srcEdgeType.opposite())
+            if (destFaceType !in faces) {
+                val neighborLoc = location.translate(srcEdgeType.dx(), srcEdgeType.dy())
+                multiGrid.withNeighboringGrid(neighborLoc) { grid ->
+                    val destFace = Face(grid, destFaceType)
+                    collectFaces(multiGrid, neighborLoc, destFace, srcFace.type, srcEdgeType.opposite())
                 }
             }
             ndx = (ndx + 1) % neighborFaceTypes.size
@@ -135,15 +139,9 @@ class CubeWrappingRule(map: Grid<Char>, sideLength: Int) : WrappingRule {
             xGrids,
             (0 until yGrids).map { y ->
                 (0 until xGrids).map { x ->
-                    map.subGrid(
-                        x * sideLength,
-                        y * sideLength,
-                        sideLength,
-                        sideLength
-                    )
+                    map.subGrid(x * sideLength, y * sideLength, sideLength, sideLength)
                 }
-            }
-                .flatten().toList()
+            }.flatten()
         )
 
     }
