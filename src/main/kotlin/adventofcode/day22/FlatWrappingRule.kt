@@ -20,13 +20,13 @@ import adventofcode.day22.EdgeType.*
 import adventofcode.util.geom.plane.Point2D
 
 class FlatWrappingRule : WrappingRule {
-    override fun wrap(pose: Pose): Pose {
-        val position = when(pose.facing) {
-            UP -> Point2D(pose.position.x, pose.face.grid.height() - 1)
-            DOWN -> Point2D(pose.position.x, 0)
-            LEFT -> Point2D(pose.face.grid.width() - 1, pose.position.y)
-            RIGHT -> Point2D(0, pose.position.y)
+    override fun wrap(src: Pose): Pose {
+        val position = when(src.facing) {
+            UP -> Point2D(src.position.x, src.face.grid.height() - 1)
+            DOWN -> Point2D(src.position.x, 0)
+            LEFT -> Point2D(src.face.grid.width() - 1, src.position.y)
+            RIGHT -> Point2D(0, src.position.y)
         }
-        return Pose(pose.face,position,pose.facing)
+        return Pose(src.face,position,src.facing)
     }
 }

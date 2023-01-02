@@ -106,7 +106,7 @@ class CubeWrappingRule(map: Grid<Char>, sideLength: Int) : WrappingRule {
 
     private fun collectFaces(
         multiGrid: Grid<GridView<Char>>,
-        location: Point2D,
+        loc: Point2D,
         srcFace: Face,
         anchorFaceType: FaceType,
         anchorEdgeType: EdgeType,
@@ -120,8 +120,8 @@ class CubeWrappingRule(map: Grid<Char>, sideLength: Int) : WrappingRule {
             val destFaceType = neighborFaceTypes[ndx]
             addFaceTransition(srcFace.type, srcEdgeType, destFaceType)
 
-            if (destFaceType !in faces) {
-                val neighborLoc = location.translate(srcEdgeType.dx(), srcEdgeType.dy())
+            if (isUnknownFaceType(destFaceType)) {
+                val neighborLoc = loc.translate(srcEdgeType.dx(), srcEdgeType.dy())
                 multiGrid.withNeighboringGrid(neighborLoc) { grid ->
                     val destFace = Face(grid, destFaceType)
                     collectFaces(multiGrid, neighborLoc, destFace, srcFace.type, srcEdgeType.opposite())
@@ -131,6 +131,8 @@ class CubeWrappingRule(map: Grid<Char>, sideLength: Int) : WrappingRule {
             srcEdgeType = srcEdgeType.turnRight()
         }
     }
+
+    private fun isUnknownFaceType(destFaceType: FaceType) = destFaceType !in faces
 
     private fun createMultiGrid(map: Grid<Char>, sideLength: Int): Grid<GridView<Char>> {
         val xGrids = map.width() / sideLength

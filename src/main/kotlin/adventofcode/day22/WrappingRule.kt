@@ -17,5 +17,5 @@
 package adventofcode.day22
 
 interface WrappingRule {
-    fun wrap(pose: Pose): Pose
+    fun wrap(src: Pose): Pose
 }
